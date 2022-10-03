@@ -28,14 +28,14 @@ module.exports = class extends Event {
 			"Why do you read this?",
 			`${this.client.utils.abbrNum(this.client.channels.cache.size, 1)} channels!`,
 			"Big sister of Kyrazaïl!",
-			`${this.client.utils.abbrNum(this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0),1)} users!`,
+			`${this.client.utils.abbrNum(this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0), 1)} users!`,
 			"Look through your mails... 👀"
 		];
 
 		let i = 0;
 		setInterval(() => this.client.user.setActivity(`,,help | ${activities[i++ % activities.length]}`, { type: 'WATCHING' }), 60000);
 
-		console.log("Online and fighting for her life.")
+		console.log("Online and fighting for her life.");
 	}
 
 };

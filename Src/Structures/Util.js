@@ -1,11 +1,10 @@
-const save = require("../../Save.json")
 const path = require('path');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
 const Command = require('./Command');
 const Event = require('./Event.js');
-var colors = require("colors")
-const fs = require("fs")
+// var colors = require("colors");
+// const fs = require("fs");
 
 module.exports = class Util {
 
@@ -76,11 +75,11 @@ module.exports = class Util {
 		var today = new Date();
 		var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-		return (date + ' ' + time).toString()
+		return (date + ' ' + time).toString();
 	}
 
 	async loadCommands() {
-		console.log(`[${this.exactDate()}] Loading commands`.red)
+		console.log(`[${this.exactDate()}] Loading commands`.red);
 		return glob(`${this.directory}commands/**/*.js`).then(commands => {
 			for (const commandFile of commands) {
 				delete require.cache[commandFile];
@@ -90,7 +89,7 @@ module.exports = class Util {
 					console.log([
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
-					].join(" "))
+					].join(" "));
 					throw new TypeError(`Command ${name} doesn't export a class.`);
 				}
 				const command = new File(this.client, name.toLowerCase());
@@ -98,23 +97,23 @@ module.exports = class Util {
 					console.log([
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
-					].join(" "))
+					].join(" "));
 					throw new TypeError(`Comamnd ${name} doesnt belong in Commands.`);
 				}
 				this.client.commands.set(command.name, command);
 				if (command.aliases.length) {
 					for (const alias of command.aliases) {
-						if (this.client.aliases.get(alias)) throw new SyntaxError(`Command ${command.name} have an already used aliases (${alias}) as ${this.client.aliases.get(alias)}!`)
+						if (this.client.aliases.get(alias)) throw new SyntaxError(`Command ${command.name} have an already used aliases (${alias}) as ${this.client.aliases.get(alias)}!`);
 						this.client.aliases.set(alias, command.name);
 					}
 				}
-				console.log(`[${this.exactDate()}] Name: ${name}`.yellow)
+				console.log(`[${this.exactDate()}] Name: ${name}`.yellow);
 			}
 		});
 	}
 
 	async loadEvents() {
-		console.log(`[${this.exactDate()}] Loading events`.red)
+		console.log(`[${this.exactDate()}] Loading events`.red);
 		return glob(`${this.directory}events/**/*.js`).then(events => {
 			for (const eventFile of events) {
 				delete require.cache[eventFile];
@@ -124,7 +123,7 @@ module.exports = class Util {
 					console.log([
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
-					].join(" "))
+					].join(" "));
 					throw new TypeError(`Event ${name} doesn't export a class!`);
 				}
 				const event = new File(this.client, name);
@@ -132,56 +131,56 @@ module.exports = class Util {
 					console.log([
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
-					].join(" "))
+					].join(" "));
 					throw new TypeError(`Event ${name} doesn't belong in Events`);
 				}
 				this.client.events.set(event.name, event);
 				event.emitter[event.type](name, (...args) => event.run(...args));
-				console.log(`[${this.exactDate()}] Name: ${name}`.yellow)
+				console.log(`[${this.exactDate()}] Name: ${name}`.yellow);
 			}
 		});
 	}
 
-	async loadDataBase() {
-		console.log(`[${this.exactDate()}] Loading databases`.red)
-		return glob(`${this.directory}Data/**/*.json`).then(db => {
-			for (var dataFile of db) {
-				delete require.cache[dataFile];
-				const { name } = path.parse(dataFile);
-				try {
-					var File = require(dataFile);
-				} catch (e) {
-					const dataEmited = { database: name, oldDataTime: save[name].time }
-					if (save[name]) {
-						console.log(["WARNING".bgYellow.black, ` Rolled back ${name} database from it old version from ${save[name].time}.`.magenta].join(""))
-						/*
-						this.client.emit("databaseRollback", dataEmited)
-						*/
-						dataFile = save[name].data
+	// async loadDataBase() {
+	// 	console.log(`[${this.exactDate()}] Loading databases`.red);
+	// 	return glob(`${this.directory}Data/**/*.json`).then(db => {
+	// 		for (var dataFile of db) {
+	// 			delete require.cache[dataFile];
+	// 			const { name } = path.parse(dataFile);
+	// 			try {
+	// 				var File = require(dataFile);
+	// 			} catch (e) {
+	// 				const dataEmited = { database: name, oldDataTime: save[name].time }
+	// 				if (save[name]) {
+	// 					console.log(["WARNING".bgYellow.black, ` Rolled back ${name} database from it old version from ${save[name].time}.`.magenta].join(""))
+	// 					/*
+	// 					this.client.emit("databaseRollback", dataEmited)
+	// 					*/
+	// 					dataFile = save[name].data
 
-						fs.writeFile(`./Src/Data/${name}.json`, JSON.stringify(dataFile, 3), function (err) {
-							if (err) console.log(err)
-						})
+	// 					fs.writeFile(`./Src/Data/${name}.json`, JSON.stringify(dataFile, 3), function (err) {
+	// 						if (err) console.log(err)
+	// 					})
 
-					} else {
-						console.log([
-							`[${this.exactDate()}]`.red,
-							"ERROR".bgRed.black,
-							name.red
-						].join(" "))
-						throw new TypeError(`Database ${name} doesn't export a database!`);
-					}
-				}
-				if (File && !save[name] && name != "Save") {
-					save[name] = { data: File, time: this.exactDate() }
-					fs.writeFile("./Save.json", JSON.stringify(save, save, 3), function (err) {
-						if (err) console.log(err)
-					})
-				}
-				console.log(`[${this.exactDate()}] Name: ${name}`.yellow)
-			}
-		});
-	}
+	// 				} else {
+	// 					console.log([
+	// 						`[${this.exactDate()}]`.red,
+	// 						"ERROR".bgRed.black,
+	// 						name.red
+	// 					].join(" "))
+	// 					throw new TypeError(`Database ${name} doesn't export a database!`);
+	// 				}
+	// 			}
+	// 			if (File && !save[name] && name != "Save") {
+	// 				save[name] = { data: File, time: this.exactDate() }
+	// 				fs.writeFile("./Save.json", JSON.stringify(save, save, 3), function (err) {
+	// 					if (err) console.log(err)
+	// 				})
+	// 			}
+	// 			console.log(`[${this.exactDate()}] Name: ${name}`.yellow)
+	// 		}
+	// 	});
+	// }
 
 	/**
 	 * 

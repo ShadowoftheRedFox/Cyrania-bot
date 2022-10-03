@@ -1,18 +1,14 @@
-const { Permissions } = require('discord.js');
+const { Permissions } = require("discord.js");
 
 module.exports = class Command {
 
 	constructor(client, name, options = {}) {
 		this.client = client;
-		this.name = options.name || name;
-		this.nameFR = options.nameFR || name;
+		this.name = options.name || [name, name];
 		this.aliases = options.aliases || [];
-		this.description = options.description || 'No description provided.';
-		this.descriptionFR = options.descriptionFR || 'Pas de description donnée.';
-		this.category = options.category || 'General';
-		this.categoryFR = options.categoryFR || 'Général';
-		this.usage = `${this.name} ${options.usage || ''}\``.trim();
-		this.usageFR = `${this.nameFR} ${options.usageFR || ''}\``.trim();
+		this.description = options.description || ["No description provided.", "Pas de description donnée."];
+		this.category = options.category || ["General", "Général"];
+		this.usage = [];
 		this.userPerms = new Permissions(options.userPerms).freeze();
 		this.botPerms = new Permissions(options.botPerms).freeze();
 		this.guildOnly = options.guildOnly || false;
@@ -24,11 +20,22 @@ module.exports = class Command {
 		this.managerOnly = options.managerOnly || false;
 		this.modOnly = options.modOnly || false;
 		this.staffOnly = options.staffOnly || false;
-		this.cooldown = options.cooldown || "3s";
+		this.cooldown = options.cooldown || 3000;
+		this.validate(this, options);
+	}
+
+	validate(commandParam, options) {
+		if (!options.usage) {
+			commandParam.usage = ["", ""];
+		} else {
+			options.usage.forEach((u, i) => {
+				commandParam.usage[i] = `${commandParam.name[i]} ${u[i] || ""}\``.trim();
+			});
+		}
 	}
 
 	async run(message, args) {
-		throw new Error(`Command ${this.name} doesn't provide a run method!`);
+		throw new Error(`Command ${this.name} doesn"t provide a run method!`);
 	}
 
 };

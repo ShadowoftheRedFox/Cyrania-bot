@@ -1,6 +1,8 @@
 {
     "token": "NjczODkyODc5ODI2OTQ0MDAz.Xjgppg.cRvUC7lbDnGXbDqYdR07KUPirTM",
-    "owners": ["431839245989183488"],
+    "owners": [
+        "431839245989183488"
+    ],
     "defaultPerms": [
         "SEND_MESSAGES",
         "VIEW_CHANNEL",
@@ -11,33 +13,5 @@
         "VIEW_CHANNEL",
         "READ_MESSAGE_HISTORY",
         "EMBED_LINKS"
-    ],
-    "mail": {
-        "globalUser": [
-            "431839245989183488"
-        ],
-        "mailSend": {
-            "number": 0,
-            "mails": {}
-        },
-        "restrictedUsers": {
-            "tab": [],
-            "users": {}
-        }
-    },
-    "750750755861823559": {
-        "IDServer": "750750755861823559",
-        "prefix": ",,",
-        "langue": "EN"
-    },
-    "863761111047077930": {
-        "IDServer": "863761111047077930",
-        "prefix": ",,",
-        "langue": "EN"
-    },
-    "781215516068151296": {
-        "IDServer": "781215516068151296",
-        "prefix": ",,",
-        "langue": "EN"
-    }
+    ]
 }
