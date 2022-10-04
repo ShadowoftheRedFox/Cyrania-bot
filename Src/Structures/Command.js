@@ -4,7 +4,8 @@ module.exports = class Command {
 
 	constructor(client, name, options = {}) {
 		this.client = client;
-		this.name = options.name || [name, name];
+		this.name = name;
+		this.displayName = options.name || [name, name];
 		this.aliases = options.aliases || [];
 		this.description = options.description || ["No description provided.", "Pas de description donnée."];
 		this.category = options.category || ["General", "Général"];
@@ -21,6 +22,11 @@ module.exports = class Command {
 		this.modOnly = options.modOnly || false;
 		this.staffOnly = options.staffOnly || false;
 		this.cooldown = options.cooldown || 3000;
+
+		this.closed = false;
+		this.reason = null;
+		this.openTime = 0;
+		this.error = [];
 		this.validate(this, options);
 	}
 
@@ -30,9 +36,9 @@ module.exports = class Command {
 			commandParam.usage[i] = `${commandParam.name[i]} ${u[i] || ""}\``.trim();
 		});
 
-		commandParam.name = this.optionsToArray(options.name);
 		commandParam.description = this.optionsToArray(options.description);
 		commandParam.category = this.optionsToArray(options.category);
+		commandParam.displayName = this.optionsToArray(options.displayName);
 
 	}
 

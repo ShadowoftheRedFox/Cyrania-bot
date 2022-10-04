@@ -145,47 +145,6 @@ module.exports = class Util {
 		});
 	}
 
-	// async loadDataBase() {
-	// 	console.log(`[${this.exactDate()}] Loading databases`.red);
-	// 	return glob(`${this.directory}Data/**/*.json`).then(db => {
-	// 		for (var dataFile of db) {
-	// 			delete require.cache[dataFile];
-	// 			const { name } = path.parse(dataFile);
-	// 			try {
-	// 				var File = require(dataFile);
-	// 			} catch (e) {
-	// 				const dataEmited = { database: name, oldDataTime: save[name].time }
-	// 				if (save[name]) {
-	// 					console.log(["WARNING".bgYellow.black, ` Rolled back ${name} database from it old version from ${save[name].time}.`.magenta].join(""))
-	// 					/*
-	// 					this.client.emit("databaseRollback", dataEmited)
-	// 					*/
-	// 					dataFile = save[name].data
-
-	// 					fs.writeFile(`./Src/Data/${name}.json`, JSON.stringify(dataFile, 3), function (err) {
-	// 						if (err) console.log(err)
-	// 					})
-
-	// 				} else {
-	// 					console.log([
-	// 						`[${this.exactDate()}]`.red,
-	// 						"ERROR".bgRed.black,
-	// 						name.red
-	// 					].join(" "))
-	// 					throw new TypeError(`Database ${name} doesn't export a database!`);
-	// 				}
-	// 			}
-	// 			if (File && !save[name] && name != "Save") {
-	// 				save[name] = { data: File, time: this.exactDate() }
-	// 				fs.writeFile("./Save.json", JSON.stringify(save, save, 3), function (err) {
-	// 					if (err) console.log(err)
-	// 				})
-	// 			}
-	// 			console.log(`[${this.exactDate()}] Name: ${name}`.yellow)
-	// 		}
-	// 	});
-	// }
-
 	/**
 	 * 
 	 * @param {number} number 
@@ -264,6 +223,21 @@ module.exports = class Util {
 					AutoMod: false
 				}
 			},
+			filter: {
+				word: ["fuck", "bitch"],
+				warn: false,
+				enable: false,
+				zalgo: false,
+				cc: false,
+				emojis: false,
+				emojisNumber: 5,
+				ignoredChannel: []
+			},
+			automod: {
+				enable: false,
+				user: [],
+				rules: {}
+			},
 			admins: [],
 			managers: [],
 			mods: [],
@@ -271,7 +245,7 @@ module.exports = class Util {
 			tags: []
 		};
 		var that = this;
-		fs.writeFile("../Data/Guild.json", JSON.stringify(GuildDB), function (err) {
+		fs.writeFile("./src/Data/Guild.json", JSON.stringify(GuildDB), function (err) {
 			if (err) {
 				that.debugMessage(err, "Inner");
 				return false;
@@ -296,5 +270,43 @@ module.exports = class Util {
 				Trace: ${error}`);
 			});
 		});
+	}
+
+	/**
+	 * @param {Message} message 
+	 * @return {boolean} success or not
+	 */
+	addUserToDB(message) {
+		const ID = message.author.id;
+		const User = require("../Data/User.json");
+
+		User[ID] = {
+			langue: "EN",
+			color: "role",
+			premium: false,
+			mail: {
+				mailSent: [],
+				mailReceived: [],
+				notif: {
+					remind: false,
+					totalNewMail: 0,
+					notUserRemind: false,
+					notUserTotalNewMail: 0
+				},
+				blockedUsers: [],
+				whiteListUsers: [],
+				allBlocked: false,
+				status: "online"
+			}
+		};
+
+		var that = this;
+		fs.writeFile("./src/Data/User.json", JSON.stringify(User), function (err) {
+			if (err) {
+				that.debugMessage(err, "Inner");
+				return false;
+			}
+		});
+		return true;
 	}
 };

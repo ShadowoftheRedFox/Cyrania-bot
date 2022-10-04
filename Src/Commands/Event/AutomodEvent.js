@@ -18,12 +18,5 @@ module.exports = class extends Command {
         if (!message.guild) return
         const GID = message.guild.id;
         const ID = message.author.id
-
-        if (!GL[GID].other.automod) {
-            GL[GID].other.automod = {
-                number: 0,
-                sanction: {}
-            }
-        }
     }
 }

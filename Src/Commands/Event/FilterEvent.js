@@ -22,22 +22,7 @@ module.exports = class extends Command {
         if (!message.guild) return
         const GID = message.guild.id;
         const ID = message.author.id
-        if (!GL[GID].other.filter) {
-            GL[GID].other.filter = {
-                word: ["fuck", "bitch"],
-                warn: false,
-                enable: false,
-                zalgo: false,
-                cc: false,
-                emojis: false,
-                emojisNumber: 5,
-                ignoredChannel: []
-            }
-        }
-        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function (err) {
-            if (err) console.log(err)
-        })
-        const filter = GL[GID].other.filter
+        const filter = GL[GID].filter
         if (filter.enable === false) return
         if (filter.ignoredChannel.indexOf(message.channel.id) > -1) return
 

@@ -21,72 +21,8 @@ module.exports = class extends Command {
 
     async run(message) {
         const ID = message.author.id
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
 
-        if (!profile[ID].data.mail) {
-            profile[ID].data.mail = {
-                mailSend: {
-                    number: 0,
-                    mails: {}
-                },
-                mailReceived: {
-                    read: [],
-                    unread: [],
-                    favorite: [],
-                    saved: [],
-                    global: [],
-                    guild: [],
-                    number: 0,
-                    mails: {},
-                },
-                notif: {
-                    remind: false,
-                    totalNewMail: 0,
-                    notUserRemind: false,
-                    notUserTotalNewMail: 0
-                },
-                blockedUsers: [],
-                whiteListUsers: [],
-                allBlocked: false,
-                status: "online"
-            }
-            console.log([
-                "==============[Mail]==============",
-                `ID: ${ID}`,
-                "Added mail box",
-                `At: ${dateTime}`,
-                "=================================="
-            ].join("\n").cyan)
-            fs.writeFile("./src/Data/User.json", JSON.stringify(profile, 3), function (err) {
-                if (err) console.log(err)
-            })
-        }
-
-        //if !guild.other.mail
-
-        var value = 0
-        var valueNotUser = 0
-        try {
-            const tab = db.all()
-            tab.forEach(element => {
-                const { ID } = element
-                const argsID = ID.split(" ")
-                if (argsID[0]) {
-                    if (argsID[0] !== "MailCyra" || !argsID[1] || argsID[1] !== message.author.id) return
-                    if (argsID[2] && !argsID[3]) {
-                        if (value < parseInt(argsID[2])) value = parseInt(argsID[2])
-                    }
-                    if (argsID[3] && args[3] === "notUser") {
-                        if (valueNotUser < parseInt(argsID[3])) valueNotUser = parseInt(argsID[3])
-                    }
-                }
-            })
-        } catch (e) { console.error(e) }
-
-        const userMail = profile[ID].data.mail
+        const userMail = profile[ID].mail
         const userStatus = userMail.status
         const unreadNewMail = userMail.notif.totalNewMail
         const notUserTotalNewMail = userMail.notif.notUserTotalNewMail
@@ -98,7 +34,7 @@ module.exports = class extends Command {
                         "==============[Mail]==============",
                         `ID: ${ID}`,
                         `Status: ${userStatus}`,
-                        `At: ${dateTime}`,
+                        `At: ${this.client.utils.exactDate()}`,
                         "=================================="
                     ].join("\n").cyan)
 
@@ -133,7 +69,7 @@ module.exports = class extends Command {
                         "==============[Mail]==============",
                         `ID: ${ID}`,
                         `Status: ${userStatus}`,
-                        `At: ${dateTime}`,
+                        `At: ${this.client.utils.exactDate()}`,
                         "=================================="
                     ].join("\n").cyan)
 

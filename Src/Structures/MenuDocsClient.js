@@ -29,14 +29,26 @@ module.exports = class MenuDocsClient extends Client {
 		});
 		this.validate(options);
 
+		/**
+		 * @type {Collection<string, Command>}
+		 */
 		this.commands = new Collection();
 
+		/**
+		 * @type {Collection<string, string>}
+		 */
 		this.aliases = new Collection();
 
+		/**
+		 * @type {Collection<string, Event>}
+		 */
 		this.events = new Collection();
 
 		this.utils = new Util(this);
 
+		/**
+		 * @type {string[]}
+		 */
 		this.owners = options.owners;
 	}
 
