@@ -26,7 +26,7 @@ module.exports = class Command {
 		this.aliases = options.aliases || [];
 		this.description = options.description || ["No description provided.", "Pas de description donnée."];
 		this.category = options.category || ["General", "Général"];
-		this.usage = [];
+		this.usage = options.usage || ["No usage provided.", "Pas d'utilisation précisée."];
 		this.userPerms = new PermissionsBitField(options.userPerms).freeze();
 		this.botPerms = new PermissionsBitField(options.botPerms).freeze();
 		this.guildOnly = options.guildOnly || false;
@@ -48,15 +48,12 @@ module.exports = class Command {
 	}
 
 	validate(commandParam, options) {
-		const paramUsage = this.optionsToArray(options.usage);
-		paramUsage.forEach((u, i) => {
-			commandParam.usage[i] = `${commandParam.name[i]} ${u[i] || ""}\``.trim();
-		});
-
+		commandParam.usage = this.optionsToArray(options.usage);
 		commandParam.description = this.optionsToArray(options.description);
 		commandParam.category = this.optionsToArray(options.category);
 		commandParam.displayName = this.optionsToArray(options.displayName);
 
+		console.log(`Descriptoin: ${commandParam.description}\n`, `Category: ${commandParam.category}\n`, `Name: ${commandParam.displayName}\n`, `Usage: ${commandParam.usage}\n`);
 	}
 
 	/**

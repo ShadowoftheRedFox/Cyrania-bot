@@ -12,7 +12,7 @@ module.exports = class extends Command {
 			description: ['Displays all the commands in the bot.', "Donne toute les commandes du bot et leur utilisation."],
 			category: ['Utilities', "Utilité"],
 			usage: ['[command]', '[command]'],
-			name: ["Help", "Aide"]
+			displayName: ["Help", "Aide"]
 		});
 	}
 
@@ -63,7 +63,7 @@ module.exports = class extends Command {
 				`**❯ Aliases:** ${cmd.aliases.length ? cmd.aliases.map(alias => `\`${alias}\``).join(' ') : 'No Aliases'}`,
 				`**❯ Description:** ${cmd.description[0]}`,
 				`**❯ Category:** ${cmd.category[0]}`,
-				`**❯ Usage:** \`${ActualPrefix}${cmd.usage[0]}`,
+				`**❯ Usage:** ${ActualPrefix}${cmd.displayName[0]} ${cmd.usage[0]}`,
 				`**❯ Server only:** ${cmd.guildOnly ? "Yes" : "No"}`,
 				`**❯ Roles needed:** ${rolesTaben.join(", ")}`
 			].join("\n"));
@@ -80,7 +80,7 @@ module.exports = class extends Command {
 				`**❯ Alliasse:** ${cmd.aliases.length ? cmd.aliases.map(alias => `\`${alias}\``).join(' ') : 'Pas d\'alliasses.'}`,
 				`**❯ Description:** ${cmd.description[1]}`,
 				`**❯ Categorie:** ${cmd.category[1]}`,
-				`**❯ Utilisation:** \`${ActualPrefix}${cmd.usage[1]}`,
+				`**❯ Utilisation:** ${ActualPrefix}${cmd.displayName[1]} ${cmd.usage[1]}`,
 				`**❯ Serveur uniquement:** ${cmd.guildOnly ? "Oui" : "Non"}`,
 				`**❯ Rôles requis:** ${rolesTabfr.join(", ")}`
 			].join("\n"));
