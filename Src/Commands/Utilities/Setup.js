@@ -3,17 +3,17 @@ const ConfigFile = require('../../Data/ConfigFile.json');
 const fs = require("fs");
 const profile = require("../../Data/User.json");
 const GL = require("../../Data/Guild.json");
-const { PermissionFlagsBits } = require("discord.js")
+const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            description: 'Setup the bot in your server.',
-            category: 'Utilities',
+            description: ['Setup the bot in your server.', "Modifie le bot pour l'adapter à votre serveur."],
+            category: ['Utilities', "Utilité"],
+            displayName: ["Setup", "Setup"],
+            aliases: ["param", "parameters", "parametre"],
             guildOnly: true,
-            categoryFR: "Utilité",
-            descriptionFR: "Modifie le bot pour l'adapter à votre serveur.",
             managerOnly: true,
             botPerms: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ViewAuditLog]
         });

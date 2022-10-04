@@ -45,12 +45,11 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            description: 'Send a mail!',
-            descriptionFR: "Envoyez un mail!",
-            category: 'Utilities',
-            categoryFR: "Utilité",
+            description: ['Send a mail!', "Envoyez un mail!"],
+            category: ['Utilities', "Utilité"],
             aliases: ["mail", "email", "emessage", "emsg", "msg", "message"],
-            usage: "[help]"
+            usage: ["[help]", "[aide]"],
+            displayName: ["Mail", "Mail"]
         });
     }
 

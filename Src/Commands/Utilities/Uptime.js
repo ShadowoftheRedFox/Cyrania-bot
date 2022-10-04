@@ -9,6 +9,7 @@ module.exports = class extends Command {
             aliases: ['ut'],
             description: ['This provides the current uptime of the bot.', "Donne la durée de connexion du bot."],
             category: ['Utilities', "Utilité"],
+            displayName: ["Uptime", "Uptime"],
             wlc: true
         });
     }
