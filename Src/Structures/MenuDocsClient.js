@@ -1,4 +1,6 @@
 const { Client, Collection, GatewayIntentBits, PermissionsBitField } = require('discord.js');
+const Command = require('./Command.js');
+const Event = require('./Event.js');
 const Util = require('./Util.js');
 
 module.exports = class MenuDocsClient extends Client {

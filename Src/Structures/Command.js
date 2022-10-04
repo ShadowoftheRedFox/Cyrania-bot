@@ -1,7 +1,24 @@
-const { PermissionsBitField } = require("discord.js");
+const { PermissionsBitField, Client } = require("discord.js");
 
 module.exports = class Command {
 
+	/**
+	 * 
+	 * @param {MenuDocsClient} client 
+	 * @param {string} name 
+	 * @param {{displayName: string[], 
+	 * aliases: 	string[], 
+	 * category: 	string[], 
+	 * usage: 		string[],
+	 * userPerms:	string[],
+	 * botPerms: 	string[], 
+	 * ownerOnly:	boolean, 
+	 * guildOnly:	boolean
+	 * adminOnly:	boolean,
+	 * managerOnly: boolean,
+	 * staffOnly: 	boolean,
+	 * cooldown: 	number}} options 
+	 */
 	constructor(client, name, options = {}) {
 		this.client = client;
 		this.name = name;
@@ -51,7 +68,7 @@ module.exports = class Command {
 		if (!param) {
 			return ["", ""];
 		} else {
-			if (!param.length || typeof param != "object") param = [param.toString(), param.toString()];
+			if (!param.length || typeof param != "object" || param.length < 2) param = [param.toString(), param.toString()];
 			return param;
 		}
 	}
