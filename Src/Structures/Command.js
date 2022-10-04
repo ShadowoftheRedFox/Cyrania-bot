@@ -1,4 +1,4 @@
-const { Permissions } = require("discord.js");
+const { PermissionsBitField } = require("discord.js");
 
 module.exports = class Command {
 
@@ -9,8 +9,8 @@ module.exports = class Command {
 		this.description = options.description || ["No description provided.", "Pas de description donnée."];
 		this.category = options.category || ["General", "Général"];
 		this.usage = [];
-		this.userPerms = new Permissions(options.userPerms).freeze();
-		this.botPerms = new Permissions(options.botPerms).freeze();
+		this.userPerms = new PermissionsBitField(options.userPerms).freeze();
+		this.botPerms = new PermissionsBitField(options.botPerms).freeze();
 		this.guildOnly = options.guildOnly || false;
 		this.ownerOnly = options.ownerOnly || false;
 		this.nsfw = options.nsfw || false;
@@ -25,12 +25,28 @@ module.exports = class Command {
 	}
 
 	validate(commandParam, options) {
-		if (!options.usage) {
-			commandParam.usage = ["", ""];
+		const paramUsage = this.optionsToArray(options.usage);
+		paramUsage.forEach((u, i) => {
+			commandParam.usage[i] = `${commandParam.name[i]} ${u[i] || ""}\``.trim();
+		});
+
+		commandParam.name = this.optionsToArray(options.name);
+		commandParam.description = this.optionsToArray(options.description);
+		commandParam.category = this.optionsToArray(options.category);
+
+	}
+
+	/**
+	 * 
+	 * @param {any} param 
+	 * @returns {string[]}
+	 */
+	optionsToArray(param) {
+		if (!param) {
+			return ["", ""];
 		} else {
-			options.usage.forEach((u, i) => {
-				commandParam.usage[i] = `${commandParam.name[i]} ${u[i] || ""}\``.trim();
-			});
+			if (!param.length || typeof param != "object") param = [param.toString(), param.toString()];
+			return param;
 		}
 	}
 

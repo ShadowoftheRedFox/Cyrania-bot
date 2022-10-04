@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             aliases: ["w", "attention"],
             modOnly: true,
             usage: "<user tag/user ID> <reason/list>",
-            botPerms: ["MANAGE_MESSAGES"],
+            botPerms: [PermissionFlagsBits.ManageMessages],
             guildOnly: true
         });
     }
@@ -117,9 +117,9 @@ module.exports = class extends Command {
         }
         other.modLogs.user[ID].number++
 
-            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
-                if (err) console.log(err)
-            })
+        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
+            if (err) console.log(err)
+        })
 
         message.delete()
         const msgUnmute = new MessageEmbed()

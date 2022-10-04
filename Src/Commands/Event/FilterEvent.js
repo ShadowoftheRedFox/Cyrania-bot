@@ -3,9 +3,9 @@ const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 const GL = require("../../Data/Guild.json")
 const emojiRegex = require("emoji-regex");
-const emojiRegexTxT = require('emoji-regex/text.js');
-const emojiRegexEs = require('emoji-regex/es2015/index.js');
-const emojiRegexEsTxT = require('emoji-regex/es2015/text.js');
+// const emojiRegexTxT = require('emoji-regex/text.js');
+// const emojiRegexEs = require('emoji-regex/es2015/index.js');
+// const emojiRegexEsTxT = require('emoji-regex/es2015/text.js');
 
 module.exports = class extends Command {
 
@@ -34,7 +34,7 @@ module.exports = class extends Command {
                 ignoredChannel: []
             }
         }
-        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function(err) {
+        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function (err) {
             if (err) console.log(err)
         })
         const filter = GL[GID].other.filter
@@ -62,6 +62,8 @@ module.exports = class extends Command {
         const LIMIT = 7;
         const DIFF = 5000;
         const TIME = 7000
+        let found = false
+        let msg = ""
 
         if (usersMap.has(message.author.id)) {
             const userData = usersMap.get(message.author.id);
@@ -105,8 +107,6 @@ module.exports = class extends Command {
             });
         }
 
-        let found = false
-        let msg = ""
         let rawContent = message.content
         const rawargs = message.content.toLowerCase().trim().split(' ')
         if (filter.zalgo === true) {
@@ -237,9 +237,9 @@ module.exports = class extends Command {
                 }
                 other.modLogs.user[ID].number++
 
-                    fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function(err) {
-                        if (err) console.log(err)
-                    })
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function (err) {
+                    if (err) console.log(err)
+                })
 
                 const logEmbed = new MessageEmbed()
                     .setTitle("Warn")

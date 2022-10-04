@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -13,7 +13,7 @@ module.exports = class extends Command {
             category: 'Moderation',
             descriptionFR: "Dit un message enregistré.",
             aliases: ["tag", "t"],
-            botPerms: ["MANAGE_MESSAGES"],
+            botPerms: [PermissionFlagsBits.ManageMessages],
             guildOnly: true,
             staffOnly: true,
             usage: "[help]"
@@ -66,7 +66,7 @@ module.exports = class extends Command {
                 }
             }
 
-            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                 if (err) console.log(err)
             })
 
@@ -103,7 +103,7 @@ module.exports = class extends Command {
                     if (reaction.emoji.name === "✅") {
                         collector.stop()
                         delete GL[GID].tags[args[2]]
-                        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                             if (err) console.log(err)
                         })
                         return message.channel.send("The tag has been deleted.")
@@ -138,9 +138,9 @@ module.exports = class extends Command {
                             timestampMS: Date.now(),
                         }
                         editedTag.edited.number++
-                            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
-                                if (err) console.log(err)
-                            })
+                        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
+                            if (err) console.log(err)
+                        })
                         return message.channel.send("The tag has been edited.")
                     }
                 })
@@ -209,7 +209,7 @@ module.exports = class extends Command {
 
                 let currentIndex = 0
                 collector.on('collect', reaction => {
-                    message.reactions.removeAll().then(async() => {
+                    message.reactions.removeAll().then(async () => {
                         if (reaction.emoji.name === '⬅️') currentIndex -= 20
                         if (reaction.emoji.name === "➡️") currentIndex += 20
                         if (reaction.emoji.name === "🗑️") {

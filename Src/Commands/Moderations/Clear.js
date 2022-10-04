@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             aliases: ["c", "broom"],
             modOnly: true,
             usage: "<number> [user]",
-            botPerms: ["MANAGE_MESSAGES"],
+            botPerms: [PermissionFlagsBits.ManageMessages],
             guildOnly: true
         });
     }

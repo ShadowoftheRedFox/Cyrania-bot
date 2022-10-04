@@ -1,13 +1,17 @@
+const { Message } = require('discord.js');
 const path = require('path');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
 const Command = require('./Command');
 const Event = require('./Event.js');
-// var colors = require("colors");
-// const fs = require("fs");
+var colors = require("colors");
+const fs = require("fs");
 
 module.exports = class Util {
 
+	/**
+	 * @param {MenuDocsClient} client 
+	 */
 	constructor(client) {
 		this.client = client;
 	}
@@ -224,4 +228,73 @@ module.exports = class Util {
 		return number;
 	}
 
+	/**
+	 * @param {Message} message 
+	 * @return {boolean} success or not
+	 */
+	addGuildToDB(message) {
+		const GID = message.guildId;
+		const GuildDB = require("../Data/Guild.json");
+
+		GuildDB[GID] = {
+			prefix: ",,",
+			lang: "EN",
+			owner: message.guild.id,
+			raid: false,
+			lockdown: false,
+			mute: {
+				role: null,
+				users: []
+			},
+			logging: {
+				enable: false,
+				channel: null,
+				type: {
+					MessageEdit: false,
+					MessageRemove: false,
+					UserBan: false,
+					UserUnBan: false,
+					UserKick: false,
+					UserMuted: false,
+					UserUnMuted: false,
+					UserJoin: false,
+					UserLeave: false,
+					UserEdit: false,
+					ModCommandUsed: false,
+					AutoMod: false
+				}
+			},
+			admins: [],
+			managers: [],
+			mods: [],
+			staff: [],
+			tags: []
+		};
+		var that = this;
+		fs.writeFile("../Data/Guild.json", JSON.stringify(GuildDB), function (err) {
+			if (err) {
+				that.debugMessage(err, "Inner");
+				return false;
+			}
+		});
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param {Error} error 
+	 * @param {"Command"|"Event"|"Inner"} type 
+	 */
+	debugMessage(error, type) {
+		console.log(`${type} Error:`.red, `${error}`);
+		this.client.debugChannel.forEach(channelId => {
+			this.client.channels.fetch(channelId).then((channel, err) => {
+				if (err) console.error(`${err}`.bgRed.black);
+				channel.send(`**Error:**
+				**Date: ${this.exactDate()}**
+				**Type: ${type}**
+				Trace: ${error}`);
+			});
+		});
+	}
 };

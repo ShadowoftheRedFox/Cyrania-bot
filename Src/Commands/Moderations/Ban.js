@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             aliases: ["b", "bans"],
             modOnly: true,
             usage: "<user tag/user ID> [reason]",
-            botPerms: ["BAN_MEMBERS", "KICK_MEMBERS"],
+            botPerms: [PermissionFlagsBits.BanMembers, PermissionFlagsBits.KickMembers],
             guildOnly: true
         });
     }
@@ -60,7 +60,7 @@ module.exports = class extends Command {
             .setTimestamp()
             .setThumbnail(message.guild.iconURL())
             .addField(`You have been banned on **${message.guild.name}**`, [
-                `**Duration:** permanent.`
+                `**Duration:** permanent.`,
                 `**Reason:** ${reason}`
             ].join("\n"))
 
@@ -93,9 +93,9 @@ module.exports = class extends Command {
         }
         other.modLogs.user[ID].number++
 
-            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
-                if (err) console.log(err)
-            })
+        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
+            if (err) console.log(err)
+        })
 
         member.send({ embeds: [banMessage] }).then(async msg => {
             try {

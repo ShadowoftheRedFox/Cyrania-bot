@@ -3,6 +3,7 @@ const ConfigFile = require('../../Data/ConfigFile.json');
 const fs = require("fs");
 const profile = require("../../Data/User.json");
 const GL = require("../../Data/Guild.json");
+const { PermissionFlagsBits } = require("discord.js")
 
 module.exports = class extends Command {
 
@@ -14,7 +15,7 @@ module.exports = class extends Command {
             categoryFR: "Utilité",
             descriptionFR: "Modifie le bot pour l'adapter à votre serveur.",
             managerOnly: true,
-            botPerms: ["MANAGE_CHANNELS", "MANAGE_ROLES", "VIEW_AUDIT_LOG", "MANAGE_MESSAGES"]
+            botPerms: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ViewAuditLog]
         });
     }
 

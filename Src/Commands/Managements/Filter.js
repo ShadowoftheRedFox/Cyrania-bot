@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -14,7 +14,7 @@ module.exports = class extends Command {
             descriptionFR: "Gère le filtre des messages.",
             managerOnly: true,
             usage: "<warn/enable/word> <on/off/word(s)>",
-            botPerms: ["MANAGE_MESSAGES"],
+            botPerms: [PermissionFlagsBits.ManageMessages],
             guildOnly: true
         });
     }
@@ -44,7 +44,7 @@ module.exports = class extends Command {
             if (args[2] === "on") {
                 if (filter.enable === true) return message.channel.send("The filter is already enable!")
                 filter.enable = true
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The filter is now enable!")
@@ -52,7 +52,7 @@ module.exports = class extends Command {
             if (args[2] === "off") {
                 if (filter.enable === false) return message.channel.send("The filter is already disable!")
                 filter.enable = false
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The filter is now disable!")
@@ -64,7 +64,7 @@ module.exports = class extends Command {
             if (args[2] === "on") {
                 if (filter.warn === true) return message.channel.send("The warn is already enable!")
                 filter.warn = true
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The warn is now enable!")
@@ -72,7 +72,7 @@ module.exports = class extends Command {
             if (args[2] === "off") {
                 if (filter.warn === false) return message.channel.send("The warn is already disable!")
                 filter.warn = false
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The warn is now disable!")
@@ -84,7 +84,7 @@ module.exports = class extends Command {
             if (args[2] === "on") {
                 if (filter.zalgo === true) return message.channel.send("The zalgo deletion is already enable!")
                 filter.zalgo = true
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The zalgo deletion is now enable!")
@@ -92,7 +92,7 @@ module.exports = class extends Command {
             if (args[2] === "off") {
                 if (filter.zalgo === false) return message.channel.send("The zalgo deletion is already disable!")
                 filter.zalgo = false
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The zalgo deletion is now disable!")
@@ -104,7 +104,7 @@ module.exports = class extends Command {
             if (args[2] === "on") {
                 if (filter.cc === true) return message.channel.send("The copy paste deletion is already enable!")
                 filter.cc = true
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The copy paste deletion is now enable!")
@@ -112,7 +112,7 @@ module.exports = class extends Command {
             if (args[2] === "off") {
                 if (filter.cc === false) return message.channel.send("The copy paste deletion is already disable!")
                 filter.cc = false
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The copy paste deletion is now disable!")
@@ -124,14 +124,14 @@ module.exports = class extends Command {
             else if (args[2] === "on") {
                 if (filter.emojis === true) return message.channel.send("The emojis deletion is already enable!")
                 filter.emojis = true
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The emojis deletion is now enable!")
             } else if (args[2] === "off") {
                 if (filter.emojis === false) return message.channel.send("The emojis deletion is already disable!")
                 filter.emojis = false
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send("The emojis deletion is now disable!")
@@ -139,7 +139,7 @@ module.exports = class extends Command {
                 if (isNaN(args[2]) === true) return message.channel.send(`Please provide a number of emojis to be in a message for deletion. Current number is ${filter.emojisNumber}.`)
                 if (args[2] <= 1) return message.channel.send("Please provide a number bigger than 1.")
                 filter.emojisNumber = parseInt(args[2])
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send(`Messages will now be deleted if the have **${args[2]}** or more emojis in them.`)
@@ -179,7 +179,7 @@ module.exports = class extends Command {
 
                     let currentIndex = 0
                     collector.on('collect', reaction => {
-                        message.reactions.removeAll().then(async() => {
+                        message.reactions.removeAll().then(async () => {
                             if (reaction.emoji.name === '⬅️') currentIndex -= 20
                             if (reaction.emoji.name === "➡️") currentIndex += 20
                             if (reaction.emoji.name === "🗑️") {
@@ -214,7 +214,7 @@ module.exports = class extends Command {
                 })
                 wordsAdd = transitTab.join("\n").toString()
                 filter.word = filter.word.concat(wordsAdd)
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send(`Words added are: "**${wordsAdd.join('**" , "**')}**"\n${someRemoved}`)
@@ -224,7 +224,7 @@ module.exports = class extends Command {
                 const index = filter.word.indexOf(args[3])
                 if (index > -1) {
                     filter.word.splice(index, 1)
-                    fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                    fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                         if (err) console.log(err)
                     })
                     return message.channel.send(`Removed **${args[3]}** from the banned words list.`)
@@ -250,7 +250,7 @@ module.exports = class extends Command {
             if (args[3] === "add") {
                 if (filter.ignoredChannel.indexOf(ignoredChannel.id) > -1) return message.channel.send("This channel is already in the ignored chat filter.")
                 filter.ignoredChannel.push(ignoredChannel.id)
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send(`<#${ignoredChannel.id}> added to ignored channels.`)
@@ -258,7 +258,7 @@ module.exports = class extends Command {
             if (args[3] === "remove") {
                 if (filter.ignoredChannel.indexOf(ignoredChannel.id) === -1) return message.channel.send("This channel is not in the ignored chat filter.")
                 filter.ignoredChannel.splice(filter.ignoredChannel.indexOf(ignoredChannel.id), 1)
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                     if (err) console.log(err)
                 })
                 return message.channel.send(`<#${ignoredChannel.id}> removed to ignored channels.`)

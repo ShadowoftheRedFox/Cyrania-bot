@@ -4,7 +4,7 @@ const profile = require("../../Data/User.json");
 const GL = require("../../Data/Guild.json");
 const config = require('../../Data/ConfigFile.json');
 const fs = require("fs")
-const db = require("quick.db")
+const db = null; //TODO replace it with my own library
 const color = require("colors")
 const ms = require("ms")
 

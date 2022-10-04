@@ -1,4 +1,4 @@
-const mtnce = require("../../Data/maintenance_mode.json");
+const mtnce = require("../../Data/Maintenance.json");
 const fs = require("fs");
 const Command = require('../../Structures/Command');
 module.exports = class extends Command {
@@ -20,14 +20,14 @@ module.exports = class extends Command {
         if (!args[1]) return message.reply("Lequel? on/off/cc/ccc/dbclear")
         if (args[1] === "on" && maintenance_mode === 0) {
             mtnce.maintenance = 1
-            fs.writeFile("./src/Data/maintenance_mode.json", JSON.stringify(mtnce, mtnce, 3), function(err) {
+            fs.writeFile("./src/Data/Maintenance.json", JSON.stringify(mtnce, mtnce, 3), function (err) {
                 if (err) console.log(err)
             })
             return message.reply("Le mode maintenance est maintenant activé.")
         }
         if (args[1] === "off" && maintenance_mode === 1) {
             mtnce.maintenance = 0
-            fs.writeFile("./src/Data/maintenance_mode.json", JSON.stringify(mtnce, mtnce, 3), function(err) {
+            fs.writeFile("./src/Data/Maintenance.json", JSON.stringify(mtnce, mtnce, 3), function (err) {
                 if (err) console.log(err)
             })
             return message.reply("Le mode maintenance est maintenant desactivé.")
@@ -48,13 +48,13 @@ module.exports = class extends Command {
                 closedCommand = {}
                 message.channel.send("Cleared ClosedCommand")
             }
-            fs.writeFile("./src/Data/closedCommand.json", JSON.stringify(closedCommand, closedCommand, 3), function(err) {
+            fs.writeFile("./src/Data/closedCommand.json", JSON.stringify(closedCommand, closedCommand, 3), function (err) {
                 if (err) console.log(err)
             })
             return
         }
         if (args[1] === "dbclear") {
-            const db = require("quick.db")
+            const db = null; //TODO replace with my own library
             try {
                 const tab = db.all()
                 tab.forEach(element => {

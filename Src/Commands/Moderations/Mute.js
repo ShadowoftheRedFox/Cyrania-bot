@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -15,7 +15,7 @@ module.exports = class extends Command {
             aliases: ["m", "silent", "silence"],
             modOnly: true,
             usage: "<user tag/user ID> <duration (2d = 2 days, 2m = 2 minutes)> [reason]",
-            botPerms: ["MANAGE_MESSAGES", "MANAGE_ROLES"],
+            botPerms: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.ManageRoles],
             guildOnly: true
         });
     }
@@ -157,9 +157,9 @@ module.exports = class extends Command {
         }
         other.modLogs.user[ID].number++
 
-            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
-                if (err) console.log(err)
-            })
+        fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
+            if (err) console.log(err)
+        })
         member.roles.add(role).then(
             setTimeout(() => {
                 if (member.roles.cache.has(role.id)) {
@@ -192,7 +192,7 @@ module.exports = class extends Command {
                     if (index > -1) {
                         other.mute.mutedArray.splice(index, 1)
                     }
-                    fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
+                    fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
                         if (err) console.log(err)
                     })
                     if (GL[GID].logs.logging === true) {

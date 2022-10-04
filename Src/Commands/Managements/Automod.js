@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -14,7 +14,7 @@ module.exports = class extends Command {
             descriptionFR: "Gère l'automodération.",
             managerOnly: true,
             usage: "[help]",
-            botPerms: ["MANAGE_CHANNELS", "KICK_MEMBERS", "BAN_MEMBERS", "MANAGE_ROLES"],
+            botPerms: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.KickMembers, PermissionFlagsBits.BanMembers, PermissionFlagsBits.ManageRoles],
             aliases: ["am", "automods", "automoderation"],
             guildOnly: true
         });
@@ -126,7 +126,7 @@ module.exports = class extends Command {
                     msg.react("❌")
                     const filter = (reaction, user) => user.id === ID
                     const collector = msg.createReactionCollector({ filter, time: 20000 });
-                    collector.on('collect', async(reaction, user) => {
+                    collector.on('collect', async (reaction, user) => {
                         if (reaction.emoji.name === "❌") {
                             collector.stop()
                             return message.channel.send("Autosanction creation canceled.")
@@ -141,9 +141,9 @@ module.exports = class extends Command {
                                 userSanctionned: []
                             }
                             AM.number++
-                                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function(err) {
-                                    if (err) console.log(err)
-                                })
+                            fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, GL, 3), function (err) {
+                                if (err) console.log(err)
+                            })
                             return message.channel.send("Sanction created; do `,,automod list` to get a list of every sanctions.")
                         }
                     })

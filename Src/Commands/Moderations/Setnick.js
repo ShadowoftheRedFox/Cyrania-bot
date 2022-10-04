@@ -1,5 +1,5 @@
 const Command = require('../../Structures/Command');
-const { Permissions } = require("discord.js")
+const { Permissions, PermissionFlagsBits } = require("discord.js")
 
 module.exports = class extends Command {
 
@@ -12,7 +12,7 @@ module.exports = class extends Command {
             usage: "<id/tag> <new nickname/null>",
             usageFR: "<id/mention> <nouveau surnom/null>",
             modOnly: true,
-            botPerms: ["MANAGE_NICKNAMES", "CHANGE_NICKNAME"],
+            botPerms: [PermissionFlagsBits.ChangeNickname],
             guildOnly: true
         });
     }

@@ -1,4 +1,4 @@
-const { Client, Collection, Permissions, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, PermissionsBitField } = require('discord.js');
 const Util = require('./Util.js');
 
 module.exports = class MenuDocsClient extends Client {
@@ -7,7 +7,25 @@ module.exports = class MenuDocsClient extends Client {
 		super({
 			partials: ['MESSAGE', 'CHANNEL', 'REACTION', "USER", "GUILD_MEMBER"],
 			allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
-			intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_PRESENCES]
+			intents: [
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMembers,
+				GatewayIntentBits.GuildBans,
+				GatewayIntentBits.GuildEmojisAndStickers,
+				GatewayIntentBits.GuildIntegrations,
+				GatewayIntentBits.GuildWebhooks,
+				GatewayIntentBits.GuildInvites,
+				GatewayIntentBits.GuildVoiceStates,
+				GatewayIntentBits.GuildPresences,
+				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.GuildMessageReactions,
+				GatewayIntentBits.GuildMessageTyping,
+				GatewayIntentBits.DirectMessages,
+				GatewayIntentBits.DirectMessageReactions,
+				GatewayIntentBits.DirectMessageTyping,
+				GatewayIntentBits.MessageContent,
+				GatewayIntentBits.GuildScheduledEvents,
+			]
 		});
 		this.validate(options);
 
@@ -31,7 +49,8 @@ module.exports = class MenuDocsClient extends Client {
 		if (!options.owners || options.owners.length == 0) console.log(["WARNING".bgYellow.black, " No owners provided."].join(""));
 
 		if (!options.defaultPerms) throw new Error('You must pass default perm(s) for the Client.');
-		this.defaultPerms = new Permissions(options.defaultPerms).freeze();
+
+		this.defaultPerms = new PermissionsBitField(options.defaultPerms).freeze();
 	}
 
 	async start(token = this.token) {

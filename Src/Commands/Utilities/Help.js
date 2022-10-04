@@ -8,13 +8,14 @@ module.exports = class extends Command {
 	constructor(...args) {
 		super(...args, {
 			aliases: ['halp', "h", "aide", "secours", "secour"],
-			description: 'Displays all the commands in the bot.',
-			category: 'Utilities',
-			usage: '[command]',
-			categoryFR: "Utilité",
-			descriptionFR: "Donne toute les commandes du bot et leur utilisation."
+			description: ['Displays all the commands in the bot.', "Donne toute les commandes du bot et leur utilisation."],
+			category: ['Utilities', "Utilité"],
+			usage: ['[command]', '[command]'],
+			name: ["Help", "Aide"]
 		});
 	}
+
+	//TODO change the usage, name etc to array handling
 
 	async run(message, [command]) {
 		let ActualPrefix = ",,";

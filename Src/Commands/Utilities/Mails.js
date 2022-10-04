@@ -5,7 +5,7 @@ const config = require('../../Data/ConfigFile.json');
 const fs = require("fs")
 const ms = require("ms")
 var color = require("colors")
-const db = require("quick.db")
+const db = null; //TODO replace with my own library
 const { MessageEmbed } = require("discord.js")
 
 function chooseMailType(str) {

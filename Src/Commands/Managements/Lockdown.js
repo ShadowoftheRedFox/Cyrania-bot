@@ -1,8 +1,8 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js")
+const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
@@ -14,8 +14,8 @@ module.exports = class extends Command {
 			descriptionFR: "Active ou désactive le confinement, gère les salons à confiner.",
 			managerOnly: true,
 			usage: "<enable/disable/channel> [reason]/<add/remove> <all/channel id/channel tag>",
-			botPerms: ["MANAGE_CHANNELS"],
-            guildOnly: true
+			botPerms: [PermissionFlagsBits.ManageChannels],
+			guildOnly: true
 		});
 	}
 	async run(message) {

@@ -2,70 +2,70 @@ const Command = require('../../Structures/Command');
 const { MessageEmbed } = require("discord.js")
 const fs = require("fs");
 const ms = require('ms');
-const db = require('quick.db');
+const db = null; //TODO replace it with my own library
 const GL = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
 
-        constructor(...args) {
-            super(...args, {
-                description: 'See all the logs relativ to moderation of someone.',
-                category: 'Moderation',
-                descriptionFR: "Regardez tout les logs relatifs à la modération de quelqu'un.",
-                aliases: ["ml", "modlog", "userlog"],
-                modOnly: true,
-                usage: "<user tag/user ID> [number] [edit] [reason]",
-                guildOnly: true
-            });
-        }
-        async run(message, [target]) {
-                const GID = message.guild.id;
-                const args = message.content.split(' ')
-                const AID = message.author.id
-                var today = new Date();
-                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                var dateTime = date + ' ' + time;
+	constructor(...args) {
+		super(...args, {
+			description: 'See all the logs relativ to moderation of someone.',
+			category: 'Moderation',
+			descriptionFR: "Regardez tout les logs relatifs à la modération de quelqu'un.",
+			aliases: ["ml", "modlog", "userlog"],
+			modOnly: true,
+			usage: "<user tag/user ID> [number] [edit] [reason]",
+			guildOnly: true
+		});
+	}
+	async run(message, [target]) {
+		const GID = message.guild.id;
+		const args = message.content.split(' ')
+		const AID = message.author.id
+		var today = new Date();
+		var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+		var dateTime = date + ' ' + time;
 
-                if (!args[1]) return message.channel.send("Please tag or put the ID of the user modlogs you want to see.")
+		if (!args[1]) return message.channel.send("Please tag or put the ID of the user modlogs you want to see.")
 
-                const member = message.mentions.members.first() || message.guild.members.cache.get(target);
-                if (!member) return message.channel.send("I wasn't able to find this user.")
-                const ID = member.user.id
+		const member = message.mentions.members.first() || message.guild.members.cache.get(target);
+		if (!member) return message.channel.send("I wasn't able to find this user.")
+		const ID = member.user.id
 
-                const ML = GL[GID].other.modLogs
-                if (ML.userLogged.indexOf(ID) === -1) return message.channel.send("This user don't have modlogs.")
-                const thisUserLogs = ML.user[ID]
-                const caseNumber = thisUserLogs.number
-                const caseTab = []
-                for (let pas = 0; pas < caseNumber; pas++) {
-                    const thisCase = thisUserLogs.case[pas]
-                    const type = thisCase.type
-                    let typeInfos = ""
-                    if (type === "warn" || type === "kick" || type === "softban") {
-                        //nothing, just the reason, which is already done
-                    } else if (type === "ban") {
-                        typeInfos = [
-                            `\`Duration:\` Permanent`,
-                            `\`Ended at:\` Never`
-                        ].join("\n")
-                    } else if (type === "tempban") {
-                        typeInfos = [
-                            `\`Duration:\` ${thisCase.duration}`,
-                            `\`Ended at:\` ${ms(Date.now() - thisCase.endAt, { long: true })} ago.`
-                        ].join("\n")
-                    } else if (type === "mute") {
-                        typeInfos = [
-                            `\`Duration:\` ${thisCase.duration}`,
-                            `\`Ended at:\` ${ms(Date.now() - thisCase.endAt, { long: true })} ago.`
-                        ].join("\n")
-                    }
-                    //can be added more
-                    caseTab.push([
-                                `**[Case n°${pas + 1}]** ${thisCase.type}`,
-                                `\`Moderator:\` ${thisCase.executorUsername}#${thisCase.executorDiscriminator} (${thisCase.executorID})`,
-                                `\`Date:\` ${thisCase.exactDate}`,
-                                `\`Reason:\` ${thisCase.reason}${typeInfos === "" ? "" : `\n${typeInfos}`}`
+		const ML = GL[GID].other.modLogs
+		if (ML.userLogged.indexOf(ID) === -1) return message.channel.send("This user don't have modlogs.")
+		const thisUserLogs = ML.user[ID]
+		const caseNumber = thisUserLogs.number
+		const caseTab = []
+		for (let pas = 0; pas < caseNumber; pas++) {
+			const thisCase = thisUserLogs.case[pas]
+			const type = thisCase.type
+			let typeInfos = ""
+			if (type === "warn" || type === "kick" || type === "softban") {
+				//nothing, just the reason, which is already done
+			} else if (type === "ban") {
+				typeInfos = [
+					`\`Duration:\` Permanent`,
+					`\`Ended at:\` Never`
+				].join("\n")
+			} else if (type === "tempban") {
+				typeInfos = [
+					`\`Duration:\` ${thisCase.duration}`,
+					`\`Ended at:\` ${ms(Date.now() - thisCase.endAt, { long: true })} ago.`
+				].join("\n")
+			} else if (type === "mute") {
+				typeInfos = [
+					`\`Duration:\` ${thisCase.duration}`,
+					`\`Ended at:\` ${ms(Date.now() - thisCase.endAt, { long: true })} ago.`
+				].join("\n")
+			}
+			//can be added more
+			caseTab.push([
+				`**[Case n°${pas + 1}]** ${thisCase.type}`,
+				`\`Moderator:\` ${thisCase.executorUsername}#${thisCase.executorDiscriminator} (${thisCase.executorID})`,
+				`\`Date:\` ${thisCase.exactDate}`,
+				`\`Reason:\` ${thisCase.reason}${typeInfos === "" ? "" : `\n${typeInfos}`}`
 			].join("\n"))
 		}
 		if (!args[2]) {
