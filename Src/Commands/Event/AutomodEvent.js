@@ -1,22 +1,22 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js");
+//TODO update embed
+const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const GL = require("../../Data/Guild.json");
+const GuildList = require("../../Data/Guild.json");
 
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            category: 'Event',
+            category: ['Event', "Evenement"],
             guildOnly: true,
-            categoryFR: "Evenement",
             ownerOnly: true
         });
     }
 
     async run(message) {
-        if (!message.guild) return
+        if (!message.guild) return;
         const GID = message.guild.id;
-        const ID = message.author.id
+        const ID = message.author.id;
     }
-}
+};

@@ -7,8 +7,7 @@ module.exports = class extends Command {
         super(...args, {
             aliases: ['pong'],
             description: ['This provides the ping of the bot', "Donne la latence du bot."],
-            category: ['Utilities', "Utilité"],
-            displayName: ["Ping", "Ping"]
+            category: ['Utilities', "Utilité"]
         });
     }
 
@@ -23,7 +22,5 @@ module.exports = class extends Command {
 
         if (profile[message.author.id].langue === "FR") msg.edit(`${responseFR} - Latence du bot: \`${latency}ms\`, Latence de l'API: \`${Math.round(this.client.ws.ping)}ms\``);
         else msg.edit(`${responseEN} - Bot Latency: \`${latency}ms\`, API Latency: \`${Math.round(this.client.ws.ping)}ms\``);
-
     }
-
 };

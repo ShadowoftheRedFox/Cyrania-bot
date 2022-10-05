@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder /*TODO update the embeds*/ } = require('discord.js');
 
 const ZWS = '\u200B';
 

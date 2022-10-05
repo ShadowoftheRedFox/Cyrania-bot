@@ -1,54 +1,76 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed } = require("discord.js");
+//TODO update embed
+const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
-const GL = require("../../Data/Guild.json")
-const emojiRegex = require("emoji-regex");
-// const emojiRegexTxT = require('emoji-regex/text.js');
-// const emojiRegexEs = require('emoji-regex/es2015/index.js');
-// const emojiRegexEsTxT = require('emoji-regex/es2015/text.js');
+const GuildList = require("../../Data/Guild.json");
+const emojiRegex = require("emoji-regex"); //TODO update that
+
+function emotes(str) {
+    if (str.match(/<a:.+?:\d+>|<:.+?:\d+>/gi)) return true;
+    else if (str.match(UNIregex)) return true;
+    else if (str.match(UNIregexTxT)) return true;
+    else if (str.match(UNIregexEs)) return true;
+    else if (str.match(UNIregexEsTxT)) return true;
+    else return false;
+}
+
+function flood(str) {
+    if (str.match(/[^A-Za-z0-9]{10}/g)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function zalgo(str) {
+    if (str.match(/[\xCC\xCD]/g)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            category: 'Event',
+            category: ['Event', "Evenement"],
             guildOnly: true,
-            categoryFR: "Evenement",
             ownerOnly: true
         });
     }
 
     async run(message) {
-        if (!message.guild) return
+        if (!message.guild) return;
         const GID = message.guild.id;
-        const ID = message.author.id
-        const filter = GL[GID].filter
-        if (filter.enable === false) return
-        if (filter.ignoredChannel.indexOf(message.channel.id) > -1) return
+        const ID = message.author.id;
+        const filter = GuildList[GID].filter;
+        if (filter.enable === false) return;
+        if (filter.ignoredChannel.indexOf(message.channel.id) > -1) return;
 
-        var foundRank = ""
-        GL[GID].staff.forEach(element => {
-            if (message.member.roles.cache.has(element)) foundRank = "staff"
+        var foundRank = "";
+        GuildList[GID].staff.forEach(element => {
+            if (message.member.roles.cache.has(element)) foundRank = "staff";
         });
-        GL[GID].mods.forEach(element => {
-            if (message.member.roles.cache.has(element)) foundRank = "mod"
+        GuildList[GID].mods.forEach(element => {
+            if (message.member.roles.cache.has(element)) foundRank = "mod";
         });
-        GL[GID].managers.forEach(element => {
-            if (message.member.roles.cache.has(element)) foundRank = "manager"
+        GuildList[GID].managers.forEach(element => {
+            if (message.member.roles.cache.has(element)) foundRank = "manager";
         });
-        GL[GID].admins.forEach(element => {
-            if (message.member.roles.cache.has(element)) foundRank = "admin"
+        GuildList[GID].admins.forEach(element => {
+            if (message.member.roles.cache.has(element)) foundRank = "admin";
         });
-        if (ID === message.guild.ownerID) foundRank = "owner"
+        if (ID === message.guild.ownerID) foundRank = "owner";
 
-        if (foundRank !== "") return
+        if (foundRank !== "") return;
 
         const usersMap = new Map();
         const LIMIT = 7;
         const DIFF = 5000;
-        const TIME = 7000
-        let found = false
-        let msg = ""
+        const TIME = 7000;
+        let found = false;
+        let msg = "";
 
         if (usersMap.has(message.author.id)) {
             const userData = usersMap.get(message.author.id);
@@ -63,17 +85,17 @@ module.exports = class extends Command {
                 userData.timer = setTimeout(() => {
                     usersMap.delete(message.author.id);
                 }, TIME);
-                usersMap.set(message.author.id, userData)
+                usersMap.set(message.author.id, userData);
             } else {
                 ++msgCount;
                 if (parseInt(msgCount) === LIMIT) {
 
-                    msg = "Warning: Spamming in this channel is forbidden."
-                    found = true
+                    msg = "Warning: Spamming in this channel is forbidden.";
+                    found = true;
                     try {
-                        message.channel.bulkDelete(LIMIT)
+                        message.channel.bulkDelete(LIMIT);
                     } catch (e) {
-                        console.log(e.stack)
+                        console.log(e.stack);
                     }
 
                 } else {
@@ -92,75 +114,54 @@ module.exports = class extends Command {
             });
         }
 
-        let rawContent = message.content
-        const rawargs = message.content.toLowerCase().trim().split(' ')
+        let rawContent = message.content;
+        const rawargs = message.content.toLowerCase().trim().split(' ');
         if (filter.zalgo === true) {
-            function zalgo(str) {
-                if (str.match(/[\xCC\xCD]/g)) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
             if (zalgo(rawContent) === true) {
-                found = true
-                msg = "You can't say zalgo here!"
+                found = true;
+                msg = "You can't say zalgo here!";
             } else {
                 rawargs.forEach(element => {
                     if (zalgo(element) === true) {
-                        found = true
-                        msg = "You can't say zalgo here!"
+                        found = true;
+                        msg = "You can't say zalgo here!";
                     }
-                })
+                });
             }
         }
 
         if (filter.zalgo === true) {
-            function flood(str) {
-                if (str.match(/[^A-Za-z0-9]{10}/g)) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
             if (flood(rawContent) === true) {
-                found = true
-                msg = "You can't say flood here!"
+                found = true;
+                msg = "You can't say flood here!";
             } else {
                 rawargs.forEach(element => {
                     if (flood(element) === true) {
-                        found = true
-                        msg = "You can't say flood here!"
+                        found = true;
+                        msg = "You can't say flood here!";
                     }
-                })
+                });
             }
         }
 
 
-        rawContent = rawContent.replace("\\", "")
-        rawContent = rawContent.replace(/([3])/g, "€")
-        rawContent = rawContent.replace(/([€])/g, "e")
-        rawContent = rawContent.replace(/([°])/g, "0")
-        rawContent = rawContent.replace(/([0])/g, "o")
-        rawContent = rawContent.replace(/([7])/g, "1")
-        rawContent = rawContent.replace(/([1])/g, "i")
+        rawContent = rawContent.replace("\\", "");
+        rawContent = rawContent.replace(/([3])/g, "€");
+        rawContent = rawContent.replace(/([€])/g, "e");
+        rawContent = rawContent.replace(/([°])/g, "0");
+        rawContent = rawContent.replace(/([0])/g, "o");
+        rawContent = rawContent.replace(/([7])/g, "1");
+        rawContent = rawContent.replace(/([1])/g, "i");
 
-        rawContent = rawContent.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-        rawContent = rawContent.normalize("NFD").replace(/\p{Diacritic}/gu, "")
+        rawContent = rawContent.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        rawContent = rawContent.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-
-
-
-
-
-        const content = rawContent
-        const args = content.split(" ")
+        const content = rawContent;
+        const args = content.split(" ");
         filter.word.forEach(element => {
             if (content.includes(element)) {
-                found = true
-                msg = "You can't say that!"
+                found = true;
+                msg = "You can't say that!";
             }
         });
 
@@ -169,25 +170,18 @@ module.exports = class extends Command {
             const UNIregex = emojiRegex(),
                 UNIregexTxT = emojiRegexTxT(),
                 UNIregexEs = emojiRegexEs(),
-                UNIregexEsTxT = emojiRegexEsTxT()
+                UNIregexEsTxT = emojiRegexEsTxT();
 
-            function emotes(str) {
-                if (str.match(/<a:.+?:\d+>|<:.+?:\d+>/gi)) return true
-                else if (str.match(UNIregex)) return true
-                else if (str.match(UNIregexTxT)) return true
-                else if (str.match(UNIregexEs)) return true
-                else if (str.match(UNIregexEsTxT)) return true
-                else return false
-            }
+
 
             if (emotes(message.content) === true) {
-                let emoteFound = 0
+                let emoteFound = 0;
                 args.forEach(element => {
-                    if (emotes(element) === true) emoteFound++
-                })
+                    if (emotes(element) === true) emoteFound++;
+                });
                 if (emoteFound >= filter.emojisNumber) {
-                    found = true
-                    msg = "You can't send too much emojis!"
+                    found = true;
+                    msg = "You can't send too much emojis!";
                 }
             }
         }
@@ -196,14 +190,14 @@ module.exports = class extends Command {
         if (found === true) {
             try {
                 message.delete().then(msgWarn => {
-                    message.author.send(msg)
-                })
+                    message.author.send(msg);
+                });
             } catch (e) {
-                console.log(e.stack)
+                console.log(e.stack);
             }
 
             if (filter.warn === true) {
-                const other = GL[GID].other
+                const other = GuildList[GID].other;
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
@@ -219,12 +213,12 @@ module.exports = class extends Command {
                     executorDiscriminator: this.client.user.discriminator,
                     exactDate: dateTime,
                     type: "warn"
-                }
-                other.modLogs.user[ID].number++
+                };
+                other.modLogs.user[ID].number++;
 
-                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GL, 3), function (err) {
-                    if (err) console.log(err)
-                })
+                fs.writeFile("./src/Data/Guild.json", JSON.stringify(GuildList, 3), function (err) {
+                    if (err) console.log(err);
+                });
 
                 const logEmbed = new MessageEmbed()
                     .setTitle("Warn")
@@ -236,17 +230,17 @@ module.exports = class extends Command {
                         `**Reason:** Filter: ${msg}`,
                         `Exact date: ${dateTime}`
                     ])
-                    .setTimestamp()
+                    .setTimestamp();
 
-                if (GL[GID].logs.logging === true) {
+                if (GuildList[GID].logs.logging === true) {
                     try {
-                        const channel = message.guild.channels.cache.get(GL[GID].logs.channel)
-                        channel.send("", { embed: logEmbed })
+                        const channel = message.guild.channels.cache.get(GuildList[GID].logs.channel);
+                        channel.send("", { embed: logEmbed });
                     } catch (error) {
-                        console.log(error.stack)
+                        console.log(error.stack);
                     }
                 }
             }
         }
     }
-}
+};

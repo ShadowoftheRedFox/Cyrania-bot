@@ -1,27 +1,28 @@
 const Command = require('../../Structures/Command');
-const { MessageEmbed, PermissionFlagsBits } = require("discord.js")
+const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
-const db = null; //TODO replace it with my own library
-const GL = require("../../Data/Guild.json");
+const GuildList = require("../../Data/Guild.json");
+const UserList = require("../../Data/User.json");
 
 module.exports = class extends Command {
 
 	constructor(...args) {
 		super(...args, {
-			description: 'Enable or disable lockdown, manage channel to lockdown too.',
-			category: 'Management',
-			descriptionFR: "Active ou désactive le confinement, gère les salons à confiner.",
-			managerOnly: true,
-			usage: "<enable/disable/channel> [reason]/<add/remove> <all/channel id/channel tag>",
+			description: ['Enable or disable lockdown, manage channel to lockdown too.', "Active ou désactive le confinement, gère les salons à confiner."],
+			category: ['Management', "Gestion"],
+			usage: ["[help]", "[aide]"],
+			displayName: ["Lockdown", "Couvre Feu"],
+			aliases: ["lock", "ld", "cf", "couvrefeu", "ferme"],
 			botPerms: [PermissionFlagsBits.ManageChannels],
-			guildOnly: true
+			managerOnly: true,
+			guildOnly: true,
+			ownerOnly: true
 		});
 	}
 	async run(message) {
 		const GID = message.guild.id;
-		const args = message.content.toLowerCase().split(' ')
-		const ID = message.author.id
-
+		const args = message.content.toLowerCase().split(' ');
+		const ID = message.author.id;
 	}
-}
+};

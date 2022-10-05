@@ -13,7 +13,7 @@ module.exports = class extends Event {
 
         return console.log([
             "RATELIMIT".bgBlue.black,
-            `${isGlobal == true ? "[GLOBAL RATE LIMIT] This is a global rate limit, not due to your client especially.".blue : ""}[END IN] ${ms(timeout, { long: false })}`.blue,
+            `${isGlobal == true ? "[GuildListOBAL RATE LIMIT] This is a global rate limit, not due to your client especially.".blue : ""}[END IN] ${ms(timeout, { long: false })}`.blue,
             `[LIMIT] limited to ${limitation} of ${method}`.blue,
             `[PATH & ROUTE] ${path} -//- ${route}`
         ].join("\n"));

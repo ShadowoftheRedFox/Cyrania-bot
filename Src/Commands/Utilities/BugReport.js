@@ -6,14 +6,10 @@ module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            description: 'Report a bug with this command!',
-            descriptionFR: "Rapportez un bug aux développeurs avec cette commande!",
-            category: 'Utilities',
-            categoryFR: "Utilité",
-            usage: "<text>",
+            description: ['Report a bug with this command!', "Rapportez un bug aux développeurs avec cette commande!"],
+            category: ['Utilities', "Utilité"],
+            usage: ["<text>", "<texte>"],
             aliases: ["br", "bug", "bugr", "rappbug", "rapportbug"],
-            nameFR: "RapportBug",
-            usageFR: "<texte>",
             ownerOnly: true
         });
     }

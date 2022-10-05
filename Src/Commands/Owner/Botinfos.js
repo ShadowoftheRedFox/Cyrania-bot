@@ -1,4 +1,5 @@
-const { MessageEmbed, version: djsversion } = require('discord.js');
+//TODO update embed
+const { EmbedBuilder, version: djsversion } = require('discord.js');
 const { version } = require('../../../package.json');
 const Command = require('../../Structures/Command');
 const { utc } = require('moment');
@@ -9,8 +10,8 @@ module.exports = class extends Command {
 		super(...args, {
 			aliases: ["bi"],
 			ownerOnly: true,
-			category: "Owner",
-			categoryFR: 'Propriétaire'
+			category: ['Owner', "Propriétaire"],
+			description: ['Display information about the bot.', "Donne des informations sur le bot."],
 		});
 	}
 
