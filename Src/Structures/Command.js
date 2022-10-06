@@ -1,4 +1,5 @@
-const { PermissionsBitField, Client } = require("discord.js");
+const { PermissionsBitField } = require("discord.js");
+const colors = require("colors");
 
 module.exports = class Command {
 
@@ -22,7 +23,7 @@ module.exports = class Command {
 	constructor(client, name, options = {}) {
 		this.client = client;
 		this.name = name;
-		this.displayName = options.name || [name, name];
+		this.displayName = options.displayName || [name, name];
 		this.aliases = options.aliases || [];
 		this.description = options.description || ["No description provided.", "Pas de description donnée."];
 		this.category = options.category || ["General", "Général"];
@@ -44,16 +45,20 @@ module.exports = class Command {
 		this.reason = null;
 		this.openTime = 0;
 		this.error = [];
-		this.validate(this, options);
+		this.validate(this, options, name);
 	}
 
-	validate(commandParam, options) {
+	validate(commandParam, options, name) {
+		if (Array.isArray(options.displayName) && options.displayName.length == 1) {
+			options.displayName.push(this.client.utils.capitalise(name));
+		} else if (!options.displayName || !Array.isArray(options.displayName)) {
+			options.displayName = [this.client.utils.capitalise(name), this.client.utils.capitalise(name)];
+		}
+
 		commandParam.usage = this.optionsToArray(options.usage);
 		commandParam.description = this.optionsToArray(options.description);
 		commandParam.category = this.optionsToArray(options.category);
 		commandParam.displayName = this.optionsToArray(options.displayName);
-
-		console.log(`Descriptoin: ${commandParam.description}\n`, `Category: ${commandParam.category}\n`, `Name: ${commandParam.displayName}\n`, `Usage: ${commandParam.usage}\n`);
 	}
 
 	/**

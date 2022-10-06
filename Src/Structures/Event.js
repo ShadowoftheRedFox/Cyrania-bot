@@ -1,4 +1,4 @@
-const { Message } = require("discord.js");
+const { Message, Events } = require("discord.js");
 const MenuDocsClient = require("./MenuDocsClient");
 
 module.exports = class Event {
@@ -13,6 +13,9 @@ module.exports = class Event {
 		this.name = name;
 		this.client = client;
 		this.type = options.once ? 'once' : 'on';
+		/**
+		 * @type {Events}
+		 */
 		this.emitter = (typeof options.emitter === 'string' ? this.client[options.emitter] : options.emitter) || this.client;
 	}
 

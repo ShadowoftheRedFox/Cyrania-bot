@@ -47,8 +47,10 @@ module.exports = class Util {
 	}
 
 	capitalise(string) {
-		if (typeof string != string) return string;
-		return string.split(' ').map(str => str.slice(0, 1).toUpperCase() + str.slice(1)).join(' ');
+		string = string.toString();
+		return string.split(' ').map(element => {
+			return element.charAt(0).toUpperCase() + element.slice(1).toLowerCase();
+		});
 	}
 
 	checkOwner(target) {

@@ -117,31 +117,37 @@ module.exports = class extends Command {
 
 
 			let categories;
-			if (message.author.id === "431839245989183488") {
+			if (this.client.owners.includes(message.author.id)) {
 				categories = this.client.utils.removeDuplicates(this.client.commands.map(cmd => cmd.category[0]));
 			} else {//cmd.category !== 'Event'
 				categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category[0] !== 'Owner' && cmd.category[0] !== 'Event').map(cmd => cmd.category[0]));
 			}
 			for (const category of categories) {
 				embedEN.addFields({
-					name: `**${this.client.utils.capitalise(category)}**`, value: this.client.commands.filter(cmd =>
-						cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' ')
+					name: `**${this.client.utils.capitalise(category)}**`,
+					value: this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' ')
 				});
+
+				console.log(this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.name}\``).join(' '));
+				console.log(this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' '));
+				console.log("\n");
 			}
 
 
 			let categoriesFR;
-			if (message.author.id === "431839245989183488") {
+			if (this.client.owners.includes(message.author.id)) {
 				categoriesFR = this.client.utils.removeDuplicates(this.client.commands.map(cmd => cmd.category[1]));
 			} else {
-				categoriesFR = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category[1] !== 'Propriétaire' && cmd.category[0] !== 'Evenement').map(cmd => cmd.category[1]));
+				categoriesFR = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category[1] !== 'Propriétaire' && cmd.category[1] !== 'Evenement').map(cmd => cmd.category[1]));
 			}
 			for (const categoryFR of categoriesFR) {
 				embedFR.addFields({
-					name: `**${this.client.utils.capitalise(categoryFR)}**`, value: this.client.commands.filter(cmd =>
-						cmd.category[1] === categoryFR).map(cmd => `\`${cmd.name[1]}\``).join(' ')
+					name: `**${this.client.utils.capitalise(categoryFR)}**`,
+					value: this.client.commands.filter(cmd => cmd.category[1] === categoryFR).map(cmd => `\`${cmd.displayName[1]}\``).join(' ')
 				});
 			}
+
+
 
 			if (UserList[message.author.id].langue === "FR") return message.channel.send({ embeds: [embedFR] });
 			else return message.channel.send({ embeds: [embedEN] });
