@@ -25,16 +25,17 @@ module.exports = class extends Command {
 	async run(message, [command]) {
 		let ActualPrefix = ",,";
 		if (message.guild) ActualPrefix = GuildList[message.guildId].prefix;
+		const color = await this.client.utils.getClientColorInGuild(message);
 
 		const embedEN = new EmbedBuilder()
-			.setColor("BLUE")
+			.setColor(color)
 			.setAuthor({ name: `🆘 | ${message.guild ? message.guild.name : message.author.username}: Help Menu`, iconURL: (message.guild ? message.guild.iconURL({ dynamic: true }) : message.author.displayAvatarURL({ dynamic: true, size: 512 })) })
 			.setThumbnail(this.client.user.displayAvatarURL())
 			.setFooter({ text: `Requested by ${message.author.username}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
 			.setTimestamp();
 
 		const embedFR = new EmbedBuilder()
-			.setColor("BLUE")
+			.setColor(color)
 			.setAuthor({ name: `🆘 | ${message.guild ? message.guild.name : message.author.username}: Menu d'aide`, iconURL: (message.guild ? message.guild.iconURL({ dynamic: true }) : message.author.displayAvatarURL({ dynamic: true, size: 512 })) })
 			.setThumbnail(this.client.user.displayAvatarURL())
 			.setFooter({ text: `Demandé par ${message.author.username}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })

@@ -1,5 +1,6 @@
 const Event = require('../Structures/Event');
 const { version } = require("../../package.json");
+const { ActivityType } = require('discord.js');
 
 module.exports = class extends Event {
 
@@ -33,7 +34,7 @@ module.exports = class extends Event {
 		];
 
 		let i = 0;
-		setInterval(() => this.client.user.setActivity(`,,help | ${activities[i++ % activities.length]}`, { type: 'WATCHING' }), 60000);
+		setInterval(() => this.client.user.setActivity({ name: `,,help | ${activities[i++ % activities.length]}`, type: ActivityType.Watching }), 60000);
 
 		console.log("Online and fighting for her life.");
 	}

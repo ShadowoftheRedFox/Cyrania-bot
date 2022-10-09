@@ -26,7 +26,7 @@ module.exports = class extends Command {
 
             const embed = new MessageEmbed()
                 .setTitle(`Showing guilds ${start + 1}-${start + current.length} out of ${guilds.length}`)
-                .setColor("BLUE");
+                .setColor("Blurple");
             current.forEach(g => embed.addField(`${g[1].name}`, [
                 `**ID:** ${g[0]}`,
                 `**Owner:** ${g[1].ownerId}`,

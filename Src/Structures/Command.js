@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require("discord.js");
+const { PermissionsBitField, Message } = require("discord.js");
 const colors = require("colors");
 
 module.exports = class Command {
@@ -75,7 +75,12 @@ module.exports = class Command {
 		}
 	}
 
-	async run(message, args) {
+	/**
+	 * 
+	 * @param {Message} message 
+	 * @param {...any} args 
+	 */
+	async run(message, ...args) {
 		throw new Error(`Command ${this.name} doesn"t provide a run method!`);
 	}
 

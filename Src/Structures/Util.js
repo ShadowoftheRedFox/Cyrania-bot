@@ -212,18 +212,18 @@ module.exports = class Util {
 				enable: false,
 				channel: null,
 				type: {
+					AutoMod: false,
 					MessageEdit: false,
 					MessageRemove: false,
-					UserBan: false,
-					UserUnBan: false,
-					UserKick: false,
-					UserMuted: false,
-					UserUnMuted: false,
-					UserJoin: false,
-					UserLeave: false,
-					UserEdit: false,
 					ModCommandUsed: false,
-					AutoMod: false
+					UserBan: false,
+					UserEdit: false,
+					UserJoin: false,
+					UserKick: false,
+					UserLeave: false,
+					UserMuted: false,
+					UserUnBan: false,
+					UserUnMuted: false
 				}
 			},
 			filter: {
@@ -270,7 +270,9 @@ module.exports = class Util {
 				channel.send(`**Error:**
 				**Date: ${this.exactDate()}**
 				**Type: ${type}**
-				Trace: ${error}`);
+				**Name: ${error.name}**
+				**Trace: ${error.message}**
+				**Stack:** ${error.stack}`).catch(err => { console.log(err); });
 			});
 		});
 	}
@@ -311,5 +313,23 @@ module.exports = class Util {
 			}
 		});
 		return true;
+	}
+
+	/**
+	 * @async
+	 * @param {Message} message 
+	 * @return {Promise<import('discord.js').ColorResolvable>}
+	 */
+	getClientColorInGuild(message) {
+		return new Promise(async (resolve, reject) => {
+			if (!message.guild) return resolve("Burple");
+			await message.guild.members.fetch(this.client.user.id).then(r => {
+				if (r) {
+					return resolve(r.displayHexColor);
+				}
+			}).catch(r => {
+				resolve("Burple");
+			});
+		});
 	}
 };
