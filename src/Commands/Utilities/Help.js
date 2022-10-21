@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, Message } = require('discord.js');
 const Command = require('../../Structures/Command');
 const GuildList = require("../../Data/Guild.json");
 const UserList = require("../../Data/User.json");
@@ -47,9 +47,14 @@ module.exports = class extends Command {
 			 */
 			const cmd = this.client.commands.get(command) || this.client.commands.get(this.client.aliases.get(command));
 
-			if (!cmd && command) {
+			if (cmd.guildWhiteList.length > 0 && !cmd.guildWhiteList.includes(message.guildId)) {
+				if (UserList[message.author.id].langue === "FR") return message.reply(`Cette commande n'est pas disponible sur ce serveur.`);
+				else return message.reply(`This command is unavailable on this server.`);
+			}
+
+			if (!cmd) {
 				if (UserList[message.author.id].langue === "FR") return message.reply(`Nom de commande invalide: \`${command}\`.`);
-				if (UserList[message.author.id].langue === "EN") return message.reply(`Invalid Command named: \`${command}\`.`);
+				else return message.reply(`Invalid Command named: \`${command}\`.`);
 			}
 
 			embedEN.setAuthor({ name: `🆘 | ${this.client.utils.capitalise(cmd.displayName[0])} Command Help`, iconURL: this.client.user.displayAvatarURL() });
@@ -88,8 +93,8 @@ module.exports = class extends Command {
 
 			if (UserList[message.author.id].langue === "FR") return message.channel.send({ embeds: [embedFR] });
 			else return message.channel.send({ embeds: [embedEN] });
-
 		} else {
+
 			if (message.guild) {
 				embedEN.setDescription([
 					`These are the available commands for ${message.guild.name}`,
@@ -124,14 +129,26 @@ module.exports = class extends Command {
 				categories = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category[0] !== 'Owner' && cmd.category[0] !== 'Event').map(cmd => cmd.category[0]));
 			}
 			for (const category of categories) {
-				embedEN.addFields({
-					name: `**${this.client.utils.capitalise(category)}**`,
-					value: this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' ')
-				});
+				// we will go through all command of the "specific" category and add those that are in the current server in the array
 
-				console.log(this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.name}\``).join(' '));
-				console.log(this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' '));
-				console.log("\n");
+				let specificCommand = [];
+				if (category == "Specific") {
+					this.client.commands.filter(cmd => cmd.category[0] === category).forEach(cmd => {
+						if (cmd.guildWhiteList.includes(message.guildId)) specificCommand.push(cmd.displayName[0]);
+					});
+
+					if (specificCommand.length > 0) {
+						embedEN.addFields({
+							name: `**${this.client.utils.capitalise(category)}**`,
+							value: `\`${specificCommand.join("` `")}\``
+						});
+					}
+				} else {
+					embedEN.addFields({
+						name: `**${this.client.utils.capitalise(category)}**`,
+						value: this.client.commands.filter(cmd => cmd.category[0] === category).map(cmd => `\`${cmd.displayName[0]}\``).join(' ')
+					});
+				}
 			}
 
 
@@ -142,10 +159,25 @@ module.exports = class extends Command {
 				categoriesFR = this.client.utils.removeDuplicates(this.client.commands.filter(cmd => cmd.category[1] !== 'Propriétaire' && cmd.category[1] !== 'Evenement').map(cmd => cmd.category[1]));
 			}
 			for (const categoryFR of categoriesFR) {
-				embedFR.addFields({
-					name: `**${this.client.utils.capitalise(categoryFR)}**`,
-					value: this.client.commands.filter(cmd => cmd.category[1] === categoryFR).map(cmd => `\`${cmd.displayName[1]}\``).join(' ')
-				});
+				let specificCommand = [];
+
+				if (categoryFR == "Spécifique") {
+					this.client.commands.filter(cmd => cmd.category[1] === categoryFR).forEach(cmd => {
+						if (cmd.guildWhiteList.includes(message.guildId)) specificCommand.push(cmd.displayName[1]);
+					});
+
+					if (specificCommand.length > 0) {
+						embedEN.addFields({
+							name: `**${this.client.utils.capitalise(categoryFR)}**`,
+							value: `\`${specificCommand.join("` `")}\``
+						});
+					}
+				} else {
+					embedFR.addFields({
+						name: `**${this.client.utils.capitalise(categoryFR)}**`,
+						value: this.client.commands.filter(cmd => cmd.category[1] === categoryFR).map(cmd => `\`${cmd.displayName[1]}\``).join(' ')
+					});
+				}
 			}
 
 

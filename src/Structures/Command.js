@@ -19,7 +19,7 @@ module.exports = class Command {
 	 * managerOnly: boolean,
 	 * staffOnly: 	boolean,
 	 * cooldown: 	number,
-	 * guildWhiteList: import("discord.js").Snowflake}} options 
+	 * guildWhiteList: string[]}} options 
 	 */
 	constructor(client, name, options = {}) {
 		this.client = client;

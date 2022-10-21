@@ -124,6 +124,10 @@ module.exports = class extends Event {
 
             console.log(`Roles perms:${found}`.green);
             if (message.guild) {
+                if (command.guildWhiteList.length > 0 && !command.guildWhiteList.includes(message.guildId)) {
+                    if (UserList[ID].langue == "FR") return message.reply("Cette commande c'est pas disponible sur ce serveur.");
+                    else return message.reply("This command is unavailable on this server.");
+                }
                 if (command.managerOnly && found !== "manager" && found !== "admin" && found !== "owner") {
                     if (UserList[ID].langue == "FR") return message.reply("Cette commande ne peut être utilisée que par un manager, un admin, ou le propriétaire du serveur.");
                     else return message.reply("This command can only be used by manager, admin or server owner.");
