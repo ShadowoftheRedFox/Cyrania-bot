@@ -26,7 +26,7 @@ module.exports = class MenuDocsClient extends Client {
 				GatewayIntentBits.DirectMessageReactions,
 				GatewayIntentBits.DirectMessageTyping,
 				GatewayIntentBits.MessageContent,
-				GatewayIntentBits.GuildScheduledEvents,
+				GatewayIntentBits.GuildScheduledEvents
 			]
 		});
 		this.validate(options);

@@ -1,4 +1,4 @@
-const { PermissionsBitField, Message } = require("discord.js");
+const { PermissionsBitField, Message, SnowflakeUtil } = require("discord.js");
 const colors = require("colors");
 
 module.exports = class Command {
@@ -18,7 +18,8 @@ module.exports = class Command {
 	 * adminOnly:	boolean,
 	 * managerOnly: boolean,
 	 * staffOnly: 	boolean,
-	 * cooldown: 	number}} options 
+	 * cooldown: 	number,
+	 * guildWhiteList: import("discord.js").Snowflake}} options 
 	 */
 	constructor(client, name, options = {}) {
 		this.client = client;
@@ -40,6 +41,7 @@ module.exports = class Command {
 		this.modOnly = options.modOnly || false;
 		this.staffOnly = options.staffOnly || false;
 		this.cooldown = options.cooldown || 3000;
+		this.guildWhiteList = options.guildWhiteList || [];
 
 		this.closed = false;
 		this.reason = null;
