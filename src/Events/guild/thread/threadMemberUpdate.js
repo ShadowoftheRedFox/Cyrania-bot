@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {ThreadMember} member
     */
     async run(member) {
-        console.log(this.name);
-        console.log("Guild thread member update.");
-        return console.log(member);
+        return console.log(this.name);
     }
-}
+};

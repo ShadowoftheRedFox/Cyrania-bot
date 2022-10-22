@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {Guild} guild 
     */
     async run(guild) {
-        console.log(this.name);
-        console.log("Guild unavailable.");
-        return console.log(guild);
+        return console.log(this.name);
     }
-}
+};

@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {ThreadChannel} channel
     */
     async run(channel) {
-        console.log(this.name);
-        console.log("Guild thread channel update.");
-        return console.log(channel);
+        return console.log(this.name);
     }
-}
+};

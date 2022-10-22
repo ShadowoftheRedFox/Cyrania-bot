@@ -10,7 +10,7 @@ module.exports = class extends Command {
             category: ['Specific', 'Spécifique'],
             botPerms: [PermissionFlagsBits.ManageRoles],
             guildOnly: true,
-            guildWhiteList: []
+            guildWhiteList: ["1024354983287738418"]
         });
     }
 
@@ -18,7 +18,8 @@ module.exports = class extends Command {
      * @param {Message} message 
      */
     async run(message) {
-        const helperRole = message.guild.roles.cache.get("");
+        const helperRole = message.guild.roles.cache.get("1032595903976054814");
+        const ID = message.author.id;
 
         if (!helperRole) {
             if (UserList[ID].langue == "FR") return message.reply("Je n'arrive pas à trouvé le rôle helper!");

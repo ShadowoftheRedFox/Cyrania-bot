@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {Sticker} sticker
     */
     async run(sticker) {
-        console.log(this.name);
-        console.log("Guild sticker update.");
-        return console.log(sticker);
+        return console.log(this.name);
     }
-}
+};

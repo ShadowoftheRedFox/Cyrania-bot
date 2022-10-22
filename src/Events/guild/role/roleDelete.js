@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {Role} role
     */
     async run(role) {
-        console.log(this.name);
-        console.log("Guild role delete.");
-        return console.log(role);
+        return console.log(this.name);
     }
-}
+};

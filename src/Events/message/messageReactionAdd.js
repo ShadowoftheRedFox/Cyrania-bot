@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {Message} message 
     */
     async run(message) {
-        console.log(this.name);
-        console.log("Message reaction add.");
-        return console.log(message);
+        return console.log(this.name);
     }
-}
+};

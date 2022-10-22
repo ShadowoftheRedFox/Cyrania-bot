@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {Webhook} webhook 
     */
     async run(webhook) {
-        console.log(this.name);
-        console.log("Webhoo.");
-        return console.log(webhook);
+        return console.log(this.name);
     }
-}
+};

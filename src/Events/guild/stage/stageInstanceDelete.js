@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {StageInstance} stage
     */
     async run(stage) {
-        console.log(this.name);
-        console.log("Guild stage delete.");
-        return console.log(stage);
+        return console.log(this.name);
     }
-}
+};

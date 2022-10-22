@@ -3,11 +3,9 @@ const { GuildScheduledEvent } = require("discord.js");
 
 module.exports = class extends Event {
     /**
-    * @param {GuildScheduledEvent} event
+    * @param {GuildScheduledEvent} scheduled
     */
-    async run(event) {
-        console.log(this.name);
-        console.log("Guild scheduled event delete.");
-        return console.log(event);
+    async run(scheduled) {
+        return console.log(this.name);
     }
-}
+};

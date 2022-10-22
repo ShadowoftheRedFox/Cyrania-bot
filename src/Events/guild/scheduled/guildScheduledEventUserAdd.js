@@ -1,15 +1,11 @@
 const Event = require('../../../Structures/Event');
-const { } = require("discord.js");
-
-//TODO response type ?
+const { GuildScheduledEvent } = require("discord.js");
 
 module.exports = class extends Event {
     /**
-    * @param {} 
+    * @param {GuildScheduledEvent} scheduled
     */
-    async run(user) {
-        console.log(this.name);
-        console.log("Guild scheduled event user add.");
-        return console.log(user);
+    async run(scheduled) {
+        return console.log(this.name);
     }
-}
+};

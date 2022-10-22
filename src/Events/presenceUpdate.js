@@ -1,15 +1,11 @@
 const Event = require('../Structures/Event');
-const { } = require("discord.js");
-
-//TODO type of response?
+const { InteractionResponse } = require("discord.js");
 
 module.exports = class extends Event {
     /**
-    * @param {} 
+    * @param {InteractionResponse} interaction
     */
     async run(interaction) {
-        console.log(this.name);
-        console.log("User presence update.");
-        return console.log(interaction);
+        return console.log(this.name);
     }
-}
+};

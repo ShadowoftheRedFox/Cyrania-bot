@@ -6,8 +6,6 @@ module.exports = class extends Event {
     * @param {GuildMember} member
     */
     async run(member) {
-        console.log(this.name);
-        console.log("Guild member add.");
-        return console.log(member);
+        return console.log(this.name);
     }
-}
+};

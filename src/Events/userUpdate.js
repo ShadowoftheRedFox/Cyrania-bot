@@ -8,8 +8,6 @@ module.exports = class extends Event {
     * @param {User} user
     */
     async run(user) {
-        console.log(this.name);
-        console.log("User update.");
-        return console.log(user);
+        return console.log(this.name);
     }
-}
+};
