@@ -26,7 +26,6 @@ module.exports = class extends Command {
         const unreadNewMail = userMail.notif.totalNewMail;
         const notUserTotalNewMail = userMail.notif.notUserTotalNewMail;
         if (userMail.notif.remind === true) {
-
             if (userStatus === "online") {
                 if (value < unreadNewMail) {
                     console.log([

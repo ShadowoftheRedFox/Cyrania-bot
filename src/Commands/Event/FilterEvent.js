@@ -43,10 +43,10 @@ module.exports = class extends Command {
     async run(message) {
         if (!message.guild) return;
         const GID = message.guild.id;
-        const ID = message.author.id;
         const filter = GuildList[GID].filter;
         if (filter.enable === false) return;
         if (filter.ignoredChannel.indexOf(message.channel.id) > -1) return;
+        const ID = message.author.id;
 
         var foundRank = "";
         GuildList[GID].staff.forEach(element => {
