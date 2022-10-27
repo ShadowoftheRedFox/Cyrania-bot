@@ -28,17 +28,18 @@ module.exports = class extends Event {
 
         if (!UserList[ID]) utils.addUserToDB(message);
 
-        if (message.guild) {
-            // const filterCommand = this.client.commands.get("FilterEvent".toLowerCase());
-            // await filterCommand.run(message).catch(error => {
-            //     this.client.utils.debugMessage(error, "Command");
-            //     if (this.client.owners.includes(ID)) return message.channel.send("Error catched.");
-            // });
-            // const automodCommand = this.client.commands.get("AutomodEvent".toLowerCase());
-            // await automodCommand.run(message).catch(error => {
-            //     this.client.utils.debugMessage(error, "Command");
-            //     if (this.client.owners.includes(ID)) return message.channel.send("Error catched.");
-            // });
+        //TODO fix at some point
+        if (message.guild && false) {
+            const filterCommand = this.client.commands.get("FilterEvent".toLowerCase());
+            await filterCommand.run(message).catch(error => {
+                this.client.utils.debugMessage(error, "Command");
+                if (this.client.owners.includes(ID)) return message.channel.send("Error catched.");
+            });
+            const automodCommand = this.client.commands.get("AutomodEvent".toLowerCase());
+            await automodCommand.run(message).catch(error => {
+                this.client.utils.debugMessage(error, "Command");
+                if (this.client.owners.includes(ID)) return message.channel.send("Error catched.");
+            });
             const userEditCommand = this.client.commands.get("UserEdit".toLowerCase());
             await userEditCommand.run(message).catch(error => {
                 this.client.utils.debugMessage(error, "Command");
