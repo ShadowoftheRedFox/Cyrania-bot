@@ -41,4 +41,34 @@ declare global {
             }
         }
     }
+
+    type TrainStop = {
+        "datasetid": "arrets-lignes",
+        "recordid": string,
+        "fields": {
+            "pointgeo": [number, number],
+            "stop_id": string,
+            "stop_name": string,
+            "operatorname": string,
+            "nom_commune": string,
+            /** Number in a string */
+            "route_long_name": string,
+            "id": string,
+            /** Number in a string */
+            "stop_lat": string,
+            /** Number in a string */
+            "stop_lon": string,
+            /** Number in a string */
+            "code_insee": string
+        }, "geometry": {
+            "type": "Point",
+            "coordinates": [number, number]
+        }
+    }
+
+    type TrainStopMinify = {
+        "stop_name": string,
+        "operatorname": string,
+        "nom_commune": string,
+    }
 }
