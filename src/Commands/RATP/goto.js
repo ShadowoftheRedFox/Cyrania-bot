@@ -3,8 +3,9 @@ const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, Message } = require("
 /**
  * @type {TrainStop[]}
  */
-const stopsArray = require("./arrets-lignes.json");
-const minifiedStops = require("./arrets-lignes-min.json");
+const StopRawDataArray = require("./arrets-lignes.json");
+const StopArray = require("./arrets-lignes-min.v1.json");
+const StopObject = require("./arrets-lignes-min.v2.json");
 const fs = require("fs");
 
 // example of a stop
