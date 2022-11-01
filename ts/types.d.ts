@@ -70,5 +70,6 @@ declare global {
         "stop_name": string,
         "operatorname": string,
         "nom_commune": string,
+        "route_long_name": string
     }
 }
