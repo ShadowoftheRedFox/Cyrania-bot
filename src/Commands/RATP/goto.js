@@ -56,7 +56,7 @@ module.exports = class extends Command {
         & Add a warning if we find a better way during the journey
         */
 
-        const row = new ActionRowBuilder()
+        const rowLine = new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
                     .setCustomId('ratpkpp_Ligne')
@@ -72,38 +72,21 @@ module.exports = class extends Command {
                             description: 'Will display all stops of this line.',
                             value: 'rer_b',
                         },
-                    ),
-
-                //! can't make too choice list in a single message
-                /*
-                new SelectMenuBuilder()
-                    .setCustomId('ratpkpp_Station')
-                    .setPlaceholder('Choose your starting station.')
-                    //TODO all stations at start, alphabetic order, then filter by line choose
-                    .addOptions(
-                        {
-                            label: 'Cergy le haut',
-                            value: 'rer_a_cergy_le_haut',
-                        },
-                        {
-                            label: 'Cergy préfecture',
-                            value: 'rer_a_cergy_préfecture',
-                        },
-                    ),*/
+                    )
             );
 
-        message.reply({ content: 'Choose a station:', components: [row] });
+        const rowStations = new ActionRowBuilder()
+            .addComponents(
+                new SelectMenuBuilder()
+                    .setCustomId('ratpkpp_Stop')
+                    .setPlaceholder('Choose a line first!')
+                    .addOptions({
+                        label: 'Stop Name',
+                        description: 'Here willbe all the stop of the choosen line.',
+                        value: 'invalid_id' // name all options like this so that the even handler ignore them
+                    })
+            );
 
+        message.reply({ content: 'Choose a station:', components: [rowLine, rowStations] });
     }
 };
-
-/**
- * @return {string[]}
- */
-function getAllLine() { }
-
-/**
- * @param {string} line
- * @return {string[]} 
- */
-function getAllStationFromLine(line) { }
