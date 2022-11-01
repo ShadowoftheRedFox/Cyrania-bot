@@ -30,7 +30,7 @@ module.exports = class extends Command {
             message.member.roles.remove(helperRole).then(res => {
                 if (res) {
                     if (UserList[ID].langue == "FR") return message.reply("Votre rôle helper vous a été enlevé.");
-                    else return message.reply("Your helper role has been removed.")
+                    else return message.reply("Your helper role has been removed.");
                 } else {
                     if (UserList[ID].langue == "FR") return message.reply("Je n'ai pas pu vous enlevé le rôle.");
                     else return message.reply("I wasn't able to remove the role from you.");
@@ -40,7 +40,7 @@ module.exports = class extends Command {
             message.member.roles.add(helperRole).then(res => {
                 if (res) {
                     if (UserList[ID].langue == "FR") return message.reply("Le rôle helper vous a été ajouté.");
-                    else return message.reply("You have now the helper role.")
+                    else return message.reply("You have now the helper role.");
                 } else {
                     if (UserList[ID].langue == "FR") return message.reply("Je n'ai pas pu vous ajouter le rôle.");
                     else return message.reply("I wasn't able to give you the role.");
@@ -48,4 +48,4 @@ module.exports = class extends Command {
             });
         }
     }
-}
+};
