@@ -332,4 +332,15 @@ module.exports = class Util {
 			});
 		});
 	}
+
+	/**
+	 * Format a string in lower case, also removing every accent or ponctuation
+	 * @param {string} string 
+	 * @return {string} the formated string
+	 */
+	formatString(string) {
+		string = string.toLowerCase();
+		// answer from https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+		string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+	}
 };
