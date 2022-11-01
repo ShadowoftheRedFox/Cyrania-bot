@@ -19,8 +19,7 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             description: ["RATP/K++ Project. Optimised traject from station A to B in real time.", 'Projet RAPT/K++. Otpimisation de trajet d\'une station A à une station B en temps réel.'],
-            category: ['RATP/K++', "RATP/K++"],
-            ownerOnly: true
+            category: ['RATP/K++', "RATP/K++"]
         });
     }
 
@@ -64,14 +63,15 @@ module.exports = class extends Command {
             .addComponents(
                 new SelectMenuBuilder()
                     .setCustomId('ratpkpp_Stop')
-                    .setPlaceholder('Choose a line first!')
+                    .setPlaceholder('Choose a station.')
                     .addOptions({
-                        label: 'Stop Name',
-                        description: 'Here willbe all the stop of the choosen line.',
-                        value: 'invalid_id' // name all options like this so that the even handler ignore them
+                        label: 'Choose a line first!',
+                        description: 'Here will be all the stop of the choosen line.',
+                        value: 'invalid_id', // name all options like this so that the even handler ignore them
+                        default: true
                     })
             );
 
-        message.reply({ content: 'Choose a station:', components: [rowLine, rowStations] });
+        message.reply({ content: 'Choose a line to filter the station, or directly choose a station:', components: [rowLine, rowStations] });
     }
 };
