@@ -3,32 +3,16 @@ const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, Message } = require("
 /**
  * @type {TrainStop[]}
  */
-const StopRawDataArray = require("./arrets-lignes.json");
+const StopRawDataArray = require("./arrets-lignes-raw.json");
+/**
+ * @type {TrainStopMinifyV1[]}
+ */
 const StopArray = require("./arrets-lignes-min.v1.json");
+/**
+ * @type {TrainStopMinifyV2}
+ */
 const StopObject = require("./arrets-lignes-min.v2.json");
 const fs = require("fs");
-
-// example of a stop
-// ? remove duplicate coordinates (saves space)?
-const arretsExample = {
-    "datasetid": "arrets-lignes",
-    "recordid": "7f3a4a48c9b9acfb2c0e2e3b8c438e4bd16318d9",
-    "fields": {
-        "pointgeo": [48.87566737659971, 2.289435418542214],
-        "stop_id": "IDFM:463121",
-        "stop_name": "Argentine",
-        "operatorname": "RATP",
-        "nom_commune": "Paris",
-        "route_long_name": "1",
-        "id": "IDFM:C01371",
-        "stop_lat": "48.87566737659971",
-        "stop_lon": "2.289435418542214",
-        "code_insee": "75056"
-    }, "geometry": {
-        "type": "Point",
-        "coordinates": [2.289435418542214, 48.87566737659971]
-    }
-};
 
 module.exports = class extends Command {
 

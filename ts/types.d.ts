@@ -66,10 +66,19 @@ declare global {
         }
     }
 
-    type TrainStopMinify = {
+    type TrainStopMinifyV1 = {
         "stop_name": string,
         "operatorname": string,
         "nom_commune": string,
         "route_long_name": string
+    }
+
+    type TrainStopMinifyV2 = {
+        [stop_name: string]: {
+            "stop_name": string,
+            "operatorname": string[],
+            "nom_commune": string[],
+            "route_long_name": string[]
+        }
     }
 }
