@@ -8,7 +8,7 @@ const UserList = require("../../Data/User.json");
 const GuildList = require("../../Data/Guild.json");
 const MaintenanceData = require("../../Data/Maintenance.json");
 
-const db = null; //TODO replace with my own library;
+const db = require("quick.db"); //TODO replace with my own library;
 
 
 module.exports = class extends Event {
@@ -76,9 +76,8 @@ module.exports = class extends Event {
         if (command) {
             //! Maintenance mode
             if (ID !== "431839245989183488" && MaintenanceData.maintenance == 1) {
-                if (UserList[ID].langue == "FR") message.reply("Je suis entrain d'être mise à jour!\nPour plus d'informations, allez voir <#776547688753659965> dans https://discord.gg/FVwnFP38P6 .");
-                else message.reply("I'm being upddated!\nFor more informations, check <#776547688753659965> in https://discord.gg/FVwnFP38P6 .");
-                return;
+                if (UserList[ID].langue == "FR") return message.reply("Je suis entrain d'être mise à jour!\nPour plus d'informations, allez voir <#776547688753659965> dans https://discord.gg/FVwnFP38P6 .");
+                else return message.reply("I'm being upddated!\nFor more informations, check <#776547688753659965> in https://discord.gg/FVwnFP38P6 .");
             }
 
             if (command.closed) {
@@ -95,6 +94,7 @@ module.exports = class extends Event {
                         else message.reply(`${command.reason} Repoen time: ${ms(command.openTime - Date.now())}`);
                     }
 
+                    // return if it's not a owner
                     if (!this.client.owners.includes(ID)) return;
                 }
             }
@@ -163,22 +163,22 @@ module.exports = class extends Event {
             }
 
             //TODO Use a method for timeout
-            // if (ID !== `431839245989183488`) {
-            //     let timer = db.fetch(`SMCyra${command.name}.${ID}`) - Date.now();
-            //     if (db.has(`SMCyra${command.name}.${ID}`) && (timer >= 0)) {
-            //         if (timer < 1000) timer = 1000;
-            //         if (langue[ID].langue == `FR`) return message.reply(`Ralentissez s'il vous plait! Attendez ${ms(timer, { long: true })} avant de refaire cette commande..`).then(msg => { return msg.delete({ timeout: 5000 }); });
-            //         return message.reply(`Please slow down! Wait ${ms(timer, { long: true })} before using this command again.`).then(msg => { return msg.delete({ timeout: 5000 }); });
-            //     }
-            //     let timeuser = command.cooldown;
-            //     db.set(`SMCyra${command.name}.${ID}`, Date.now() + ms(timeuser));
-            //     const interval = setInterval(function () {
-            //         if (Date.now() > db.fetch(`SMCyra${command.name}.${ID}`)) {
-            //             db.delete(`SMCyra${command.name}.${ID}`);
-            //             clearInterval(interval);
-            //         }
-            //     }, 1000);
-            // }
+            if (ID !== `431839245989183488`) {
+                let timer = db.fetch(`SMCyra${command.name}.${ID}`) - Date.now();
+                if (db.has(`SMCyra${command.name}.${ID}`) && (timer >= 0)) {
+                    if (timer < 1000) timer = 1000;
+                    if (langue[ID].langue == `FR`) return message.reply(`Ralentissez s'il vous plait! Attendez ${ms(timer, { long: true })} avant de refaire cette commande..`).then(msg => { return msg.delete({ timeout: 5000 }); });
+                    return message.reply(`Please slow down! Wait ${ms(timer, { long: true })} before using this command again.`).then(msg => { return msg.delete({ timeout: 5000 }); });
+                }
+                let timeuser = command.cooldown;
+                db.set(`SMCyra${command.name}.${ID}`, Date.now() + ms(timeuser));
+                const interval = setInterval(function () {
+                    if (Date.now() > db.fetch(`SMCyra${command.name}.${ID}`)) {
+                        db.delete(`SMCyra${command.name}.${ID}`);
+                        clearInterval(interval);
+                    }
+                }, 1000);
+            }
 
             console.log([
                 `=============================`,
@@ -231,6 +231,8 @@ module.exports = class extends Event {
     }
 };
 /*
+? All PermissionsBitField.flags
+
 CreateInstantInvite
 KickMembers
 BanMembers

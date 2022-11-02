@@ -53,7 +53,7 @@ module.exports = class extends Command {
             return;
         }
         if (args[1] === "dbclear") {
-            const db = null; //TODO replace with my own library
+            const db = require("quick.db");
             try {
                 const tab = db.all();
                 tab.forEach(element => {

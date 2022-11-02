@@ -1,6 +1,6 @@
 {
  "name": "cyrania",
- "version": "1.1.454",
+ "version": "1.1.455",
  "main": "src/index.js",
  "devDependencies": {
   "@anishshobith/deeptype": "^1.1.0",
@@ -21,6 +21,7 @@
  "license": "ISC",
  "description": "",
  "dependencies": {
+  "quick.db": "^9.0.6",
   "xmlhttprequest": "^1.8.0"
  }
 }
