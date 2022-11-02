@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -12,11 +11,11 @@ function embedFct(number) {
     current.forEach(c => {
         thisTab.push(c);
     });
-    const modlogsEmbed = new MessageEmbed()
+    const modlogsEmbed = new EmbedBuilder()
         .setTitle(`Tags ${number + 1}-${number + current.length} out of ${tagList.length}`)
         .setTimestamp()
-        .setColor("WHITE")
-        .addField(`Tag list:`, thisTab.join("\n"));
+        .setColor("White")
+        .addFields({ name: `Tag list:`, value: thisTab.join("\n") });
     return modlogsEmbed;
 }
 
@@ -37,10 +36,7 @@ module.exports = class extends Command {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const ID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         let foundAth = 0;
         GuildList[GID].staff.forEach(element => {
@@ -67,6 +63,7 @@ module.exports = class extends Command {
             const tag = args.slice(3).join(" ");
             if (tag.length > 2000) return message.channel.send("For the moment, bots can not send message with more than 2000 letters. Please make your tag shorter.");
 
+            //TODO update database
             GuildList[GID].tags[args[2]] = {
                 content: tag,
                 tagName: args[2],
@@ -175,17 +172,19 @@ module.exports = class extends Command {
                 ].join("");
             }
 
-            const infosEmbed = new MessageEmbed()
+            const infosEmbed = new EmbedBuilder()
                 .setTimestamp()
                 .setColor("WHITE")
                 .setDescription(`Do \`,,tag ${args[2]} to see the content of this tag.\``)
-                .addField(`${args[2]} infos:`, [
-                    `**Tag name:** ${tag.tagName}`,
-                    `**Author:**: ${tag.name}#${tag.discriminator} (${tag.author})`,
-                    `**Creation date:** ${tag.timestamp} (${ms(Date.now() - tag.timestampMS, { long: true })} ago.)`,
-                    `**Last edit:** ${edit}`,
-                    `Has been updated ${tag.edited.number} times.`
-                ].join("\n"));
+                .addFields({
+                    name: `${args[2]} infos:`, value: [
+                        `**Tag name:** ${tag.tagName}`,
+                        `**Author:**: ${tag.name}#${tag.discriminator} (${tag.author})`,
+                        `**Creation date:** ${tag.timestamp} (${ms(Date.now() - tag.timestampMS, { long: true })} ago.)`,
+                        `**Last edit:** ${edit}`,
+                        `Has been updated ${tag.edited.number} times.`
+                    ].join("\n")
+                });
 
             return message.channel.send({ embeds: [infosEmbed] });
 
@@ -206,7 +205,7 @@ module.exports = class extends Command {
                 message.react("🗑️");
                 message.react('➡️');
                 const filter = (reaction, user) => ['⬅️', "🗑️", '➡️'].includes(reaction.emoji.name) && user.id === ID;
-                const collector = message.createReactionCollector({ time: 60000 });
+                const collector = message.createReactionCollector({ filter, time: 60000 });
 
                 let currentIndex = 0;
                 collector.on('collect', reaction => {

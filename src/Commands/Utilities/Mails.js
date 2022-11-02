@@ -15,7 +15,7 @@ function embedFct(number) {
     current.forEach(c => {
         thisTab.push(c);
     });
-    mailsEMbed.addField(`Mail box:`, thisTab.join(""));
+    mailsEMbed.addFields(`Mail box:`, thisTab.join(""));
     return mailsEMbed;
 }
 
@@ -69,10 +69,7 @@ module.exports = class extends Command {
         if (message.guild) GID = message.guild.id;
         const args = message.content.split(" ");
         const globalUser = config.mail.globalUser;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         function toLC(number) {
             if (!args[number]) return undefined;
@@ -646,9 +643,9 @@ module.exports = class extends Command {
             }
 
             //[read/favorite/unread/saved/sended/global]
-            const mailsEMbed = new MessageEmbed()
+            const mailsEMbed = new EmbedBuilder()
                 .setTimestamp()
-                .setColor("WHITE")
+                .setColor("White")
                 .setDescription([
                     "To read a mail, do `,,mails read <mail number>`.",
                     "If you want to see only some of the mails, do `,,mails box [read/favorite/unread/saved/sended/global]`.",
@@ -658,7 +655,7 @@ module.exports = class extends Command {
 
             if (allMail.length == 0) {
                 mailsEMbed.setTitle(`✉ Mails `);
-                mailsEMbed.addField(`Mail box:`, "You mail box is empty!");
+                mailsEMbed.addFields({ name: `Mail box:`, value: "You mail box is empty!" });
                 return message.channel.send({ embeds: [mailsEMbed] });
             }
             if (allMail.length <= 10) return message.channel.send({ embeds: [embedFct(0)] });
@@ -730,19 +727,21 @@ module.exports = class extends Command {
             if (thisMail.file.number > 0) {
                 thisMailFiles = thisMail.file.links;
             }
-            const mailReadEmbed = new MessageEmbed()
+            const mailReadEmbed = new EmbedBuilder()
                 .setTitle(`Unread mail n°${toLC(2)}`)
-                .setColor("WHITE")
+                .setColor("White")
                 .setDescription([
                     `If you want to make it as one of your favorite, type \`,,mails read ${toLC(2)} favorite\``
                 ].join("\n"))
-                .addField(chooseMailType(thisMail.type), [
-                    `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
-                    `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
-                    `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
-                ].join("\n"))
+                .addFields({
+                    name: chooseMailType(thisMail.type), value: [
+                        `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
+                        `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
+                        `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
+                    ].join("\n")
+                })
                 .setTimestamp()
-                .setFooter("Thanks for using CyraMailServices");
+                .setFooter({ text: "Thanks for using CyraMailServices" });
 
             return message.channel.send({ content: mailContent, embeds: [mailReadEmbed], files: thisMailFiles });
         }
@@ -763,20 +762,22 @@ module.exports = class extends Command {
             if (thisMail.file.number > 0) {
                 thisMailFiles = thisMail.file.links;
             }
-            const mailReadEmbed = new MessageEmbed()
+            const mailReadEmbed = new EmbedBuilder()
                 .setTitle(`Read mail n°${toLC(2)}`)
-                .setColor("WHITE")
+                .setColor("White")
                 .setDescription([
                     `If you want to unread this mail, type \`,,mails read ${toLC(2)} unread\``,
                     `If you want to make it as one of your favorite, type \`,,mails read ${toLC(2)} favorite\``
                 ].join("\n"))
-                .addField(chooseMailType(thisMail.type), [
-                    `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
-                    `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
-                    `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
-                ].join("\n"))
+                .addFields({
+                    name: chooseMailType(thisMail.type), value: [
+                        `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
+                        `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
+                        `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
+                    ].join("\n")
+                })
                 .setTimestamp()
-                .setFooter("Thanks for using CyraMailServices");
+                .setFooter({ text: "Thanks for using CyraMailServices" });
 
             return message.channel.send({ content: mailContent, embeds: [mailReadEmbed], files: thisMailFiles });
         }
@@ -796,19 +797,21 @@ module.exports = class extends Command {
             if (thisMail.file.number > 0) {
                 thisMailFiles = thisMail.file.links;
             }
-            const mailReadEmbed = new MessageEmbed()
+            const mailReadEmbed = new EmbedBuilder()
                 .setTitle(`Read mail n°${toLC(2)}`)
-                .setColor("WHITE")
+                .setColor("White")
                 .setDescription([
                     `If you want to remove this one as one of your favorite, type \`,,mails favorite ${toLC(2)} unfavorite\``
                 ].join("\n"))
-                .addField(chooseMailType(thisMail.type), [
-                    `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
-                    `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
-                    `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
-                ].join("\n"))
+                .addFields({
+                    name: chooseMailType(thisMail.type), value: [
+                        `Sended the ${thisMail.sended} (\`${thisMail.sendedMS ? ms(Date.now() - thisMail.sendedMS, { long: true }) : "Unknown"} ago\`)`,
+                        `${thisMail.edited == true ? "Edited mail." : "Original mail."}`,
+                        `By ${thisMail.authorTag} (<@${thisMail.authorID}>)`
+                    ].join("\n")
+                })
                 .setTimestamp()
-                .setFooter("Thanks for using CyraMailServices");
+                .setFooter({ text: "Thanks for using CyraMailServices" });
 
             return message.channel.send({ content: mailContent, embeds: [mailReadEmbed], files: thisMailFiles });
         }

@@ -27,16 +27,16 @@ module.exports = class extends Command {
             const embed = new MessageEmbed()
                 .setTitle(`Showing guilds ${start + 1}-${start + current.length} out of ${guilds.length}`)
                 .setColor("Blurple");
-            current.forEach(g => embed.addField(`${g[1].name}`, [
-                `**ID:** ${g[0]}`,
-                `**Owner:** ${g[1].ownerId}`,
-                `**MemberCount:** ${g[1].memberCount}`
-            ].join("\n")));
+            current.forEach(g => embed.addFields({
+                name: `${g[1].name}`, value: [
+                    `**ID:** ${g[0]}`,
+                    `**Owner:** ${g[1].ownerId}`,
+                    `**MemberCount:** ${g[1].memberCount}`
+                ].join("\n")
+            }));
 
             return embed;
         };
-
-        const author = message.author;
 
         message.channel.send({ embeds: [generateEmbed(0)] }).then(message => {
             if (guilds.length <= 10) return;

@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -18,14 +17,11 @@ module.exports = class extends Command {
             guildOnly: true
         });
     }
-    async run(message, [target]) {
+    async run(message, [target, ...banReason]) {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const AID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         if (!args[1]) return message.author.send("Please tag or put the ID of the user you want to ban.");
 
@@ -55,7 +51,7 @@ module.exports = class extends Command {
 
         const banMessage = new EmbedBuilder()
             .setTitle("Banned")
-            .setColor("RED")
+            .setColor("DarkRed")
             .setTimestamp()
             .setThumbnail(message.guild.iconURL())
             .addFields({

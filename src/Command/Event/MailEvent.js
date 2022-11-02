@@ -1,13 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
-const { EmbedBuilder } = require("discord.js");
-const UserList = require("../../Data/User.json");
-const GuildList = require("../../Data/Guild.json");
-const fs = require("fs");
-const db = null; //TODO replace it with my own library
-const color = require("colors");
-const ms = require("ms");
-
 module.exports = class extends Command {
 
     constructor(...args) {
@@ -20,7 +11,8 @@ module.exports = class extends Command {
 
     async run(message) {
         const ID = message.author.id;
-
+        //TODO rewrite it if we keep the mail system
+        /*
         const userMail = UserList[ID].mail;
         const userStatus = userMail.status;
         const unreadNewMail = userMail.notif.totalNewMail;
@@ -98,6 +90,6 @@ module.exports = class extends Command {
                     return message.channel.send(`New mail <@${ID}>!`, { embeds: [mailEmbed] });
                 }
             }
-        }
+        }*/
     }
 };

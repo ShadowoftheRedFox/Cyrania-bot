@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -12,11 +11,11 @@ function embedFct(number) {
 	current.forEach(c => {
 		thisTab.push(c);
 	});
-	const modlogsEmbed = new MessageEmbed()
+	const modlogsEmbed = new EmbedBuilder()
 		.setTitle(`Mod logs ${number + 1}-${number + current.length} out of ${caseTab.length} of ${member.user.tag} (${ID})`)
 		.setTimestamp()
 		.setColor("#8388f7")
-		.addField(`Case${caseNumber > 0 ? "s" : ""}:`, thisTab.join("\n"));
+		.addFields({ name: `Case${caseNumber > 0 ? "s" : ""}:`, value: thisTab.join("\n") });
 	return modlogsEmbed;
 }
 
@@ -36,10 +35,7 @@ module.exports = class extends Command {
 		const GID = message.guild.id;
 		const args = message.content.split(' ');
 		const AID = message.author.id;
-		var today = new Date();
-		var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-		var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-		var dateTime = date + ' ' + time;
+		var dateTime = this.client.utils.exactDate();
 
 		if (!args[1]) return message.channel.send("Please tag or put the ID of the user modlogs you want to see.");
 
@@ -140,14 +136,16 @@ module.exports = class extends Command {
 					});
 				});
 			} else {
-				const modlogsEmbed = new MessageEmbed()
+				const modlogsEmbed = new EmbedBuilder()
 					.setTitle(`Mod log of ${member.user.tag} (${ID})`)
 					.setTimestamp()
 					.setColor("#8388f7")
 					.setDescription(`You can do \`${args[0]} @${member.user.username} ${args[2]} edit <reason>\` to edit the reason of this mod log, bu you can't delete a mod log.`)
-					.addField("Case:", [
-						caseTab[parseInt(args[2]) - 1]
-					].join("\n"));
+					.addFields({
+						name: "Case:", value: [
+							caseTab[parseInt(args[2]) - 1]
+						].join("\n")
+					});
 
 				return message.channel.send({ embeds: [modlogsEmbed] });
 			}

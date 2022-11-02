@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const GuildList = require("../../Data/Guild.json");
@@ -198,10 +197,7 @@ module.exports = class extends Command {
 
             if (filter.warn === true) {
                 const other = GuildList[GID].other;
-                var today = new Date();
-                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                var dateTime = date + ' ' + time;
+                var dateTime = this.client.utils.exactDate();
 
                 other.modLogs.user[ID].case[other.modLogs.user[ID].number] = {
                     reason: `Filter: ${msg}`,
@@ -220,22 +216,24 @@ module.exports = class extends Command {
                     if (err) console.log(err);
                 });
 
-                const logEmbed = new MessageEmbed()
+                const logEmbed = new EmbedBuilder()
                     .setTitle("Warn")
-                    .setColor("YELLOW")
+                    .setColor("Yellow")
                     .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
-                    .addField("Infos:", [
-                        `**Moderator:** ${this.client.user.tag} (\`${this.client.user.id}\`)`,
-                        `**Warned:** ${message.author.tag} (\`${ID}\`)`,
-                        `**Reason:** Filter: ${msg}`,
-                        `Exact date: ${dateTime}`
-                    ])
+                    .addFields({
+                        name: "Infos:", value: [
+                            `**Moderator:** ${this.client.user.tag} (\`${this.client.user.id}\`)`,
+                            `**Warned:** ${message.author.tag} (\`${ID}\`)`,
+                            `**Reason:** Filter: ${msg}`,
+                            `Exact date: ${dateTime}`
+                        ]
+                    })
                     .setTimestamp();
 
-                if (GuildList[GID].logs.logging === true) {
+                if (GuildList[GID].logging === true) {
                     try {
-                        const channel = message.guild.channels.cache.get(GuildList[GID].logs.channel);
-                        channel.send("", { embed: logEmbed });
+                        const channel = message.guild.channels.cache.get(GuildList[GID].logging.channel);
+                        channel.send({ embeds: [logEmbed] });
                     } catch (error) {
                         console.log(error.stack);
                     }

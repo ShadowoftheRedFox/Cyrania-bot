@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const GuildList = require("../../Data/Guild.json");

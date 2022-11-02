@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -175,7 +174,7 @@ module.exports = class extends Command {
                     message.react("🗑️");
                     message.react('➡️');
                     const filter = (reaction, user) => user.id === ID;
-                    const collector = message.createReactionCollector({ time: 60000 });
+                    const collector = message.createReactionCollector(filter, { time: 60000 });
 
                     let currentIndex = 0;
                     collector.on('collect', reaction => {

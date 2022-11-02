@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -22,10 +21,7 @@ module.exports = class extends Command {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const AID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         if (!args[1]) return message.author.send("Please tag or put the ID of the user you want to mute.");
 
@@ -85,30 +81,34 @@ module.exports = class extends Command {
         let reason = "No reason provided.";
         if (args[3]) reason = args.slice(3).join(" ");
 
-        const muteMessage = new MessageEmbed()
+        const muteMessage = new EmbedBuilder()
             .setTitle("Muted")
-            .setColor("RED")
+            .setColor("Red")
             .setTimestamp()
             .setThumbnail(message.guild.iconURL())
-            .addField(`You have been muted on **${message.guild.name}**`, [
-                `**Duration:** ${ms(duration, { long: true })}`,
-                `**Reason:** ${reason}`
-            ].join("\n"))
-            .setDescription("If you think that was injustified, wait that 2/3 of your mute have passed then go in the MP of a super moderator.");
+            .addFields({
+                name: `You have been muted on **${message.guild.name}**`, value: [
+                    `**Duration:** ${ms(duration, { long: true })}`,
+                    `**Reason:** ${reason}`
+                ].join("\n")
+            });
 
         const logEmbed = new MessageEmbed()
             .setTitle("Mute")
-            .setColor("YELLOW")
+            .setColor("Yellow")
             .setTimestamp()
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
-            .addField("Infos:", [
-                `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
-                `**Muted:** ${member.user.tag} (\`${ID}\`)`,
-                `**Duration:** ${ms(duration, { long: true })}`,
-                `**Reason:** ${reason}`,
-                `Exact date: ${dateTime}`
-            ].join("\n"));
+            .addFields({
+                name: "Infos:", value: [
+                    `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
+                    `**Muted:** ${member.user.tag} (\`${ID}\`)`,
+                    `**Duration:** ${ms(duration, { long: true })}`,
+                    `**Reason:** ${reason}`,
+                    `Exact date: ${dateTime}`
+                ].join("\n")
+            });
 
+        //TODO change database
         const other = GuildList[GID].other;
 
         if (other.mute.mutedArray.indexOf(ID) === -1) other.mute.mutedArray.push(ID);
@@ -173,16 +173,18 @@ module.exports = class extends Command {
                             console.log(error.stack);
                         }
                     }
-                    const unmuted = new MessageEmbed()
+                    const unmuted = new EmbedBuilder()
                         .setTitle("Unmute")
-                        .setColor("YELLOW")
+                        .setColor("Yellow")
                         .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
-                        .addField("Infos:", [
-                            `**Moderator:** ${this.client.user.tag} (\`673892879826944003\`)`,
-                            `**Unmuted:** ${member.user.tag} (\`${ID}\`)`,
-                            `**Reason:** Automatic (end of sanction)`,
-                            `Exact date: ${dateTime}`
-                        ].join("\n"))
+                        .addFields({
+                            name: "Infos:", value: [
+                                `**Moderator:** ${this.client.user.tag} (\`673892879826944003\`)`,
+                                `**Unmuted:** ${member.user.tag} (\`${ID}\`)`,
+                                `**Reason:** Automatic (end of sanction)`,
+                                `Exact date: ${dateTime}`
+                            ].join("\n")
+                        })
                         .setTimestamp()
                         .setFooter(`User case n°${other.modLogs.user[ID].number}`);
 

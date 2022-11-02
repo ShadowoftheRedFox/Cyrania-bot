@@ -1,4 +1,3 @@
-//TODO update embed
 const { EmbedBuilder, version: djsversion, Message } = require('discord.js');
 const { version } = require('../../../package.json');
 const Command = require('../../Structures/Command');

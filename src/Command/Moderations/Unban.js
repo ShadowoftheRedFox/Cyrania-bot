@@ -1,6 +1,5 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
-const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { EmbedBuilder, PermissionFlagsBits, Embed } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
 const GuildList = require("../../Data/Guild.json");
@@ -22,10 +21,7 @@ module.exports = class extends Command {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const AID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         if (!args[1]) return message.author.send("Please provide the ID of the user you want to unban.");
         const exID = "431839245989183488";
@@ -39,7 +35,7 @@ module.exports = class extends Command {
             try {
                 msg.guild.members.unban(bUser.user);
                 message.delete().then(msg => {
-                    const ubEmbed = new MessageEmbed()
+                    const ubEmbed = new EmbedBuilder()
                         .setTitle("✅ User unbanned.");
                     message.channel.send({ embeds: [ubEmbed] });
                 });

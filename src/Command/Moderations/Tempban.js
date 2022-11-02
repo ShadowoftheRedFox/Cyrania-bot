@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -22,10 +21,7 @@ module.exports = class extends Command {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const AID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         if (!args[1]) return message.author.send("Please tag or put the ID of the user you want to tempban.");
 
@@ -61,29 +57,33 @@ module.exports = class extends Command {
         let reason = "No reason provided.";
         if (args[2]) reason = args.slice(3).join(" ");
 
-        const banMessage = new MessageEmbed()
+        const banMessage = new EmbedBuilder()
             .setTitle("Banned")
             .setColor("RED")
             .setTimestamp()
             .setThumbnail(message.guild.iconURL())
-            .addField(`You have been banned on **${message.guild.name}**`, [
-                `**Duration:** ${ms(duration, { long: true })}`,
-                `**Reason:** ${reason}`
-            ].join("\n"))
+            .addFields({
+                name: `You have been banned on **${message.guild.name}**`, value: [
+                    `**Duration:** ${ms(duration, { long: true })}`,
+                    `**Reason:** ${reason}`
+                ].join("\n")
+            })
             .setDescription("If you think that was injustified, wait that 2/3 of your mute have passed then go in the MP of a super moderator.");
 
-        const logEmbed = new MessageEmbed()
+        const logEmbed = new EmbedBuilder()
             .setTitle("Mute")
             .setColor("YELLOW")
             .setTimestamp()
             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
-            .addField("Infos:", [
-                `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
-                `**Muted:** ${member.user.tag} (\`${ID}\`)`,
-                `**Duration:** ${ms(duration, { long: true })}`,
-                `**Reason:** ${reason}`,
-                `Exact date: ${dateTime}`
-            ].join("\n"));
+            .addFields({
+                name: "Infos:", value: [
+                    `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
+                    `**Muted:** ${member.user.tag} (\`${ID}\`)`,
+                    `**Duration:** ${ms(duration, { long: true })}`,
+                    `**Reason:** ${reason}`,
+                    `Exact date: ${dateTime}`
+                ].join("\n")
+            });
         const other = GuildList[GID].other;
 
         if (!other.modLogs) {
@@ -126,16 +126,18 @@ module.exports = class extends Command {
                     if (!bUser) return;
                     try {
                         msg.guild.members.unban(bUser.user);
-                        const unbanned = new MessageEmbed()
+                        const unbanned = new EmbedBuilder()
                             .setTitle("Unban")
                             .setColor("YELLOW")
                             .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 512 }))
-                            .addField("Infos:", [
-                                `**Moderator:** ${this.client.user.tag} (\`673892879826944003\`)`,
-                                `**Unbanned:** ${member.user.tag} (\`${ID}\`)`,
-                                `**Reason:** Automatic (end of duration)`,
-                                `Exact date: ${dateTime}`
-                            ].join("\n"))
+                            .addFields({
+                                name: "Infos:", value: [
+                                    `**Moderator:** ${this.client.user.tag} (\`673892879826944003\`)`,
+                                    `**Unbanned:** ${member.user.tag} (\`${ID}\`)`,
+                                    `**Reason:** Automatic (end of duration)`,
+                                    `Exact date: ${dateTime}`
+                                ].join("\n")
+                            })
                             .setTimestamp()
                             .setFooter(`User case n°${other.modLogs.user[member.id].number}`);
                         if (GuildList[GID].logs.logging === true) {
@@ -162,7 +164,7 @@ module.exports = class extends Command {
                     }
                 }, duration);
                 message.delete().then(msg => {
-                    const banned = new MessageEmbed()
+                    const banned = new EmbedBuilder()
                         .setTitle(`✅ User tempbanned.`);
                     message.channel.send({ embeds: [banned] });
                 });

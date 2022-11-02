@@ -1,6 +1,6 @@
 export { }
 
-import { Client, ColorResolvable, Message, Snowflake } from "discord.js"
+import { Client, ColorResolvable, Message, PermissionsBitField, Snowflake } from "discord.js"
 import MenuDocsClient from "../src/Structures/MenuDocsClient"
 import Util from "../src/Structures/Util"
 import Command from "../src/Structures/Command"
@@ -14,6 +14,7 @@ declare global {
         utils: Util
         owners: Snowflake[]
         debugChannel: Snowflake[]
+        defaultPerms: Readonly<PermissionsBitField>
     }
 
     class Command {

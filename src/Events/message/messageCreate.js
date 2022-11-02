@@ -68,9 +68,6 @@ module.exports = class extends Event {
         if (message.guild) prefix = message.content.match(mentionRegexPrefix) ? message.content.match(mentionRegexPrefix)[0] : GuildList[message.guildId].prefix;
 
         if (!message.content.startsWith(prefix)) return;
-        //TODO Remove at some point
-        if (!this.client.owners.includes(ID)) return message.reply("I'm currently being updated to support the newest version of discord!");
-
         const [cmd, ...args] = message.content.slice(prefix.length).trim().split(/ +/g);
         const command = this.client.commands.get(cmd.toLowerCase()) || this.client.commands.get(this.client.aliases.get(cmd.toLowerCase()));
 

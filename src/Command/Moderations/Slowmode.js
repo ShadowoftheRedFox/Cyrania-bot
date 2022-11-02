@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -23,10 +22,7 @@ module.exports = class extends Command {
         const GID = message.guild.id;
         const args = message.content.split(' ');
         const AID = message.author.id;
-        var today = new Date();
-        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        var dateTime = date + ' ' + time;
+        var dateTime = this.client.utils.exactDate();
 
         if (!number) return message.author.send("You need to choose a number of seconds to wait for the slowmode!");
         if (isNaN(number) || number < 0) return message.author.send("You need to provide a correct number!");
@@ -39,20 +35,22 @@ module.exports = class extends Command {
         try {
             message.channel.setRateLimitPerUser(number, reason);
 
-            const logEmbed = new MessageEmbed()
+            const logEmbed = new EmbedBuilder()
                 .setTitle("Slowmode")
-                .setColor("GREEN")
+                .setColor("Green")
                 .setTimestamp()
-                .addField("Infos:", [
-                    `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
-                    `**Channel:** ${message.channel.name} (\`${message.channel.id}\`)`,
-                    `**Time:** ${number}`,
-                    `**Reason:** ${reason}`,
-                    `Exact date: ${dateTime}`
-                ].join("\n"));
+                .addFields({
+                    name: "Infos:", value: [
+                        `**Moderator:** ${message.author.tag} (\`${AID}\`)`,
+                        `**Channel:** ${message.channel.name} (\`${message.channel.id}\`)`,
+                        `**Time:** ${number}`,
+                        `**Reason:** ${reason}`,
+                        `Exact date: ${dateTime}`
+                    ].join("\n")
+                });
 
             message.delete().then(msg => {
-                const sm = new MessageEmbed()
+                const sm = new EmbedBuilder()
                     .setTitle(`✅ ${parseInt(number) === 0 ? "Slowmode disabled." : "Slow mode set."}`);
                 message.channel.send({ embeds: [sm] });
             });

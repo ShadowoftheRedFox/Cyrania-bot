@@ -1,5 +1,4 @@
 const Command = require('../../Structures/Command');
-//TODO update embed
 const { EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 const fs = require("fs");
 const ms = require('ms');
@@ -18,7 +17,7 @@ module.exports = class extends Command {
             guildOnly: true
         });
     }
-    async run(message) {
+    async run(message, [TargetOrRaw, TargetNumber]) {
         const GID = message.guild.id;
         const args = message.content.split(' ');
 
