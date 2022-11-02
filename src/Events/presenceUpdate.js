@@ -6,6 +6,7 @@ module.exports = class extends Event {
     * @param {InteractionResponse} interaction
     */
     async run(interaction) {
-        return console.log(this.name);
+        return;
+        // return console.log(this.name);
     }
 };
