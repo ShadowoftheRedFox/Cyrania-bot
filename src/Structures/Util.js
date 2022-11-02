@@ -337,10 +337,41 @@ module.exports = class Util {
 	 * Format a string in lower case, also removing every accent or ponctuation
 	 * @param {string} string 
 	 * @return {string} the formated string
+	 * @source https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
 	 */
 	formatString(string) {
 		string = string.toLowerCase();
-		// answer from https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
-		string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+	}
+
+	/**
+	 * Async get url.
+	 * @param {string} theUrl 
+	 * @param {(response: XMLHttpRequest | null) => any} callback 
+	 * @return {XMLHttpRequest}
+	 * @source https://stackoverflow.com/questions/247483/http-get-request-in-javascript
+	 */
+	httpGetAsync(theUrl, callback) {
+		var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function () {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+				return callback(xmlHttp);
+		};
+		xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+		xmlHttp.send(null);
+	}
+	/**
+	 * Sync get url.
+	 * @param {string} theUrl 
+	 * @return {XMLHttpRequest}
+	 * @source https://stackoverflow.com/questions/247483/http-get-request-in-javascript
+	 */
+	httpGet(theUrl) {
+		var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.open("GET", theUrl, false); // false for synchronous request
+		xmlHttp.send(null);
+		return xmlHttp;
 	}
 };
