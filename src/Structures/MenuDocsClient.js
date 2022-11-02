@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits, PermissionsBitField } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, PermissionsBitField, Partials } = require('discord.js');
 const Command = require('./Command.js');
 const Event = require('./Event.js');
 const Util = require('./Util.js');
@@ -7,7 +7,7 @@ module.exports = class MenuDocsClient extends Client {
 
 	constructor(options = {}) {
 		super({
-			partials: ['MESSAGE', 'CHANNEL', 'REACTION', "USER", "GUILD_MEMBER"],
+			partials: [Partials.User, Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction, Partials.GuildScheduledEvent, Partials.ThreadMember],
 			allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
 			intents: [
 				GatewayIntentBits.Guilds,

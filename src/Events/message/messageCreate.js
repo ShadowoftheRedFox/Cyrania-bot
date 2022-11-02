@@ -10,7 +10,7 @@ const MaintenanceData = require("../../Data/Maintenance.json");
 
 const db = null; //TODO replace with my own library;
 
-//TODO UPDATE THIS CRAP
+
 module.exports = class extends Event {
     /**
     * @param {Message} message 
@@ -54,13 +54,15 @@ module.exports = class extends Event {
                 if (this.client.owners.includes(ID)) return message.channel.send("Error catched.");
             });
         }
+
         if (message.content.match(mentionRegex)) {
+            console.log(`mention regex acquired, guild: ${!!message.guild}`);
             if (message.guild) {
                 if (UserList[ID].langue == "FR") return message.reply(`Mon préfix pour ${message.guild.name} est \`${GuildList[message.guildId].prefix}\`.\nTapez \`${GuildList[message.guildId].prefix}help\` si vous avez besoin d'aide.`);
                 else return message.reply(`My prefix for ${message.guild.name} is \`${GuildList[message.guildId].prefix}\`.\nType \`${GuildList[message.guildId].prefix}help\` if you need help.`);
             } else {
-                if (UserList[ID].langue == "FR") return message.author.send(`Mon préfix pour vous est \`,,\`.\nTapez \`,,help\` si vous avez besoin d'aide.`);
-                else return message.author.send(`My prefix for you is \`,,\`.\nType \`,,help\` if you need help.`);
+                if (UserList[ID].langue == "FR") return message.reply(`Mon préfix pour vous est \`,,\`.\nTapez \`,,help\` si vous avez besoin d'aide.`);
+                else return message.reply(`My prefix for you is \`,,\`.\nType \`,,help\` if you need help.`);
             }
         }
 
