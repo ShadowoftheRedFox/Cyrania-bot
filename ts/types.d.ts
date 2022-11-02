@@ -81,4 +81,45 @@ declare global {
             "route_long_name": string[]
         }
     }
+
+    type LineStopMinifyV1 = {
+        [route_long_name: string]: {
+            "stop_name": string[],
+            "operatorname": string[],
+            "nom_commune": string[],
+            "route_long_name": string
+        }
+    }
+
+    /**
+     * @author {Pierre Grimaud}
+     * @source https://github.com/pgrimaud/horaires-ratp-api
+     */
+    type RATP_API_TRAFFIC = {
+        "result": {
+            "metros": {
+                "line": string,
+                "slug": "normal" | "normal_trav" | "alerte",
+                "title": string,
+                "message": string
+            }[],
+            "rers": {
+                "line": string,
+                "slug": "normal" | "normal_trav" | "alerte",
+                "title": string,
+                "message": string
+            }[],
+            "tramways": {
+                "line": string,
+                "slug": "normal" | "normal_trav" | "alerte",
+                "title": string,
+                "message": string
+            }[]
+        },
+        "_metadata": {
+            "call": "GET /traffic",
+            "date": Date,
+            "version": number
+        }
+    }
 }
