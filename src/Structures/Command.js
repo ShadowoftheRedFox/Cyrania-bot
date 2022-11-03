@@ -42,6 +42,7 @@ module.exports = class Command {
 		this.staffOnly = options.staffOnly || false;
 		this.cooldown = options.cooldown || 3000;
 		this.guildWhiteList = options.guildWhiteList || [];
+		this.slash = options.slash || false;
 
 		this.closed = false;
 		this.reason = null;

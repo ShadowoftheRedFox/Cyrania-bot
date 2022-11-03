@@ -11,6 +11,7 @@ declare global {
         commands: Map<string, Command>
         aliases: Map<string, string>
         events: Map<string, Event>
+        slash: Map<string, SlashCommand>
         utils: Util
         owners: Snowflake[]
         debugChannel: Snowflake[]
@@ -20,6 +21,8 @@ declare global {
     class Command {
         run(message: Message, ...args: any)
     }
+
+    type SlashCommand = {}
 
     type UserList = {
         [ID: Snowflake | string]: {

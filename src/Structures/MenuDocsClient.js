@@ -37,6 +37,11 @@ module.exports = class MenuDocsClient extends Client {
 		this.commands = new Collection();
 
 		/**
+		 * @type {Collection<string, SlashCommand>}
+		 */
+		this.slash = new Collection();
+
+		/**
 		 * @type {Collection<string, string>}
 		 */
 		this.aliases = new Collection();
@@ -72,7 +77,9 @@ module.exports = class MenuDocsClient extends Client {
 		// await this.utils.loadDataBase();
 		await this.utils.loadCommands();
 		await this.utils.loadEvents();
+		await this.utils.loadSlashCommands();
 		super.login(token);
+		await this.utils.registerSlashCommands();
 	}
 
 };

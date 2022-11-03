@@ -1,11 +1,15 @@
-const { Message } = require('discord.js');
+const { Message, SlashCommandBuilder, REST, Routes } = require('discord.js');
+
+const { testGuilds, token } = require('../Data/Config.json');
 const path = require('path');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
-const Command = require('./Command');
-const Event = require('./Event.js');
+
 var colors = require("colors");
 const fs = require("fs");
+
+const Command = require('./Command');
+const Event = require('./Event.js');
 
 module.exports = class Util {
 
@@ -105,7 +109,7 @@ module.exports = class Util {
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
 					].join(" "));
-					throw new TypeError(`Comamnd ${name} doesnt belong in Commands.`);
+					throw new TypeError(`Command ${name} doesnt belong in Commands.`);
 				}
 				this.client.commands.set(command.name, command);
 				if (command.aliases.length) {
@@ -146,6 +150,69 @@ module.exports = class Util {
 				console.log(`[${this.exactDate()}] Name: ${name}`.yellow);
 			}
 		});
+	}
+
+	/**
+	 * Load all slash commands into an array
+	 * @returns {CommandInteraction[]} return the array of the slash commands found.
+	 */
+	async loadSlashCommands() {
+		console.log(`[${this.exactDate()}] Loading slash commands`.red);
+		return glob(`${this.directory}slashs/**/*.js`).then(slashs => {
+			for (const slashCommandFile of slashs) {
+				delete require.cache[slashCommandFile];
+				const { name } = path.parse(slashCommandFile);
+				const File = require(slashCommandFile);
+				if (typeof File.data.toJSON != "function") {
+					console.log([
+						`[${this.exactDate()}]`.red,
+						"ERROR".bgRed.black
+					].join(" "));
+					throw new TypeError(`Slash command ${name} doesn't export a SlashCommandBuilder class.`);
+				}
+
+				this.client.slash.set(File.data.name, File);
+				// no aliases for slash commands
+				console.log(`[${this.exactDate()}] Name: ${name}`.yellow);
+			}
+		});
+	}
+
+	async registerSlashCommands() {
+
+		// get all slash commands
+		const commands = [];
+
+		const commandKeys = Array.from(this.client.slash.keys());
+		console.log(commandKeys);
+
+		// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
+		for (const key of commandKeys) {
+			const command = this.client.slash.get(key);
+			commands.push(command);
+		}
+		return;
+
+		// Construct and prepare an instance of the REST module
+		const rest = new REST({ version: '10' }).setToken(token);
+
+		// and deploy your commands!
+		(async () => {
+			try {
+				console.log(`Started refreshing ${commands.length} application (/) commands.`);
+
+				// The put method is used to fully refresh all commands in the guild with the current set
+				const data = await rest.put(
+					Routes.applicationGuildCommands(clientId, guildId),
+					{ body: commands },
+				);
+
+				console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+			} catch (error) {
+				// And of course, make sure you catch and log any errors!
+				console.error(error);
+			}
+		})();
 	}
 
 	/**
