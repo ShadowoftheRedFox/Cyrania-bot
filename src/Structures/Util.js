@@ -1,4 +1,4 @@
-const { Message, SlashCommandBuilder, REST, Routes } = require('discord.js');
+const { Message, SlashCommandBuilder, REST, Routes, Guild } = require('discord.js');
 
 const { testGuilds, token } = require('../Data/Config.json');
 const path = require('path');
@@ -152,10 +152,6 @@ module.exports = class Util {
 		});
 	}
 
-	/**
-	 * Load all slash commands into an array
-	 * @returns {CommandInteraction[]} return the array of the slash commands found.
-	 */
 	async loadSlashCommands() {
 		console.log(`[${this.exactDate()}] Loading slash commands`.red);
 		return glob(`${this.directory}slashs/**/*.js`).then(slashs => {
@@ -179,35 +175,55 @@ module.exports = class Util {
 	}
 
 	async registerSlashCommands() {
-
 		// get all slash commands
-		const commands = [];
+		const commandsGuild = [];
+		const commandsGlobal = [];
+		const commandsGuildSpecific = [];
 
 		const commandKeys = Array.from(this.client.slash.keys());
-		console.log(commandKeys);
 
 		// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 		for (const key of commandKeys) {
 			const command = this.client.slash.get(key);
-			commands.push(command);
+			if (command.isGlobal) commandsGlobal.push(command.data.toJSON());
+			else if (command.guildSpecific.length == 0) commandsGuild.push(command.data.toJSON());
+			else commandsGuildSpecific.push(command);
 		}
-		return;
 
 		// Construct and prepare an instance of the REST module
 		const rest = new REST({ version: '10' }).setToken(token);
 
 		// and deploy your commands!
-		(async () => {
+		return await (async () => {
 			try {
-				console.log(`Started refreshing ${commands.length} application (/) commands.`);
-
 				// The put method is used to fully refresh all commands in the guild with the current set
-				const data = await rest.put(
-					Routes.applicationGuildCommands(clientId, guildId),
-					{ body: commands },
-				);
+				console.log(`Started refreshing ${commandsGlobal.length} application (/) test commands.`);
+				for (const guildId of testGuilds) {
+					const dataTest = await rest.put(
+						Routes.applicationGuildCommands(this.client.user.id, guildId),
+						{ body: commandsGuild },
+					);
+					console.log(`Successfully reloaded ${dataTest.length} application (/) test commands.`);
+				}
 
-				console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+				console.log(`Started refreshing ${commandsGlobal.length} application (/) global commands.`);
+				const dataGlobal = await rest.put(
+					Routes.applicationCommands(this.client.user.id),
+					{ body: commandsGlobal },
+				);
+				console.log(`Successfully reloaded ${dataGlobal.length} application (/) global commands.`);
+
+				console.log(`Started refreshing ${commandsGlobal.length} application (/) specific commands.`);
+				commandsGuildSpecific.forEach(async commandSpecific => {
+					for (const guildId of commandSpecific.guildSpecific) {
+						const dataSpecific = await rest.put(
+							Routes.applicationGuildCommands(this.client.user.id, guildId),
+							{ body: commandSpecific.data.toJSON() },
+						);
+						console.log(`Successfully reloaded ${dataSpecific.length} application (/) specific commands.`);
+					}
+				});
+
 			} catch (error) {
 				// And of course, make sure you catch and log any errors!
 				console.error(error);

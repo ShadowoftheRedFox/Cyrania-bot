@@ -10,12 +10,16 @@ module.exports = class extends Event {
 		});
 	}
 
-	run() {
+	async run() {
+
+		await this.client.utils.registerSlashCommands();
+
 		console.log([
 			`▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬`,
 			`Logged in as ${this.client.user.tag}`,
 			`Version: v${version}`,
 			`Loaded ${this.client.commands.size} commands!`,
+			`Loaded ${this.client.slash.size} slashs!`,
 			`Loaded ${this.client.events.size} events!`,
 			`On ${this.client.guilds.cache.size} warzones!`,
 			`Watching ${this.client.channels.cache.size} battlefields!`,

@@ -79,7 +79,6 @@ module.exports = class MenuDocsClient extends Client {
 		await this.utils.loadEvents();
 		await this.utils.loadSlashCommands();
 		super.login(token);
-		await this.utils.registerSlashCommands();
 	}
 
 };

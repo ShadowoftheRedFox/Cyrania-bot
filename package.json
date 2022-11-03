@@ -1,27 +1,27 @@
 {
- "name": "cyrania",
- "version": "1.1.480",
- "main": "src/index.js",
- "devDependencies": {
-  "@anishshobith/deeptype": "^1.1.0",
-  "colors": "^1.4.0",
-  "discord.js": "^14.5.0",
-  "emoji-regex": "^10.2.1",
-  "glob": "^7.1.6",
-  "moment": "^2.29.4",
-  "ms": "^2.1.3",
-  "node": "^15.2.1",
-  "nodemon": "^2.0.6"
- },
- "scripts": {
-  "start": "src/index.json",
-  "test": "test/mini.test.js"
- },
- "author": "Shadow of the Red Fox#5881",
- "license": "ISC",
- "description": "",
- "dependencies": {
-  "quick.db": "^9.0.6",
-  "xmlhttprequest": "^1.8.0"
- }
+    "name": "cyrania",
+    "version": "1.1.483",
+    "main": "src/index.js",
+    "devDependencies": {
+        "@anishshobith/deeptype": "^1.1.0",
+        "colors": "^1.4.0",
+        "discord.js": "^14.5.0",
+        "emoji-regex": "^10.2.1",
+        "glob": "^7.1.6",
+        "moment": "^2.29.4",
+        "ms": "^2.1.3",
+        "node": "^15.2.1",
+        "nodemon": "^2.0.6"
+    },
+    "scripts": {
+        "start": "src/index.json",
+        "test": "test/mini.test.js"
+    },
+    "author": "Shadow of the Red Fox#5881",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "quick.db": "^9.0.6",
+        "xmlhttprequest": "^1.8.0"
+    }
 }
