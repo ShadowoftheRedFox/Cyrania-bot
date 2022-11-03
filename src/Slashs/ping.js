@@ -12,11 +12,10 @@ module.exports = {
     guildSpecific: [],
 
     /**
-     * 
+     * @param {MenuDocsClient} client 
      * @param {Interaction} interaction 
-     * @param {Client} client 
      */
-    async execute(interaction, client) {
+    async execute(client, interaction) {
         await interaction.deferReply({ ephemeral: true });
         await wait(2000);
         await interaction.editReply({

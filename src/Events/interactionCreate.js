@@ -3,10 +3,26 @@ const { BaseInteraction, MessageComponentInteraction } = require("discord.js");
 
 module.exports = class extends Event {
     /**
-    * @param {BaseInteraction} baseEvent
+    * @param {BaseInteraction} interaction
     */
-    async run(baseEvent) {
-        if (baseEvent.isSelectMenu() && baseEvent.customId.includes("ratpkpp")) return await ratpProject(baseEvent);
+    async run(interaction) {
+        if (interaction.isSelectMenu() && interaction.customId.includes("ratpkpp")) return await ratpProject(interaction);
+        else if (interaction.isChatInputCommand()) {
+            const command = this.client.slash.get(interaction.commandName);
+
+            if (!command) {
+                console.error(`No command matching ${interaction.commandName} was found.`);
+                return;
+            }
+
+            try {
+                return await command.execute(this.client, interaction);
+            } catch (error) {
+                console.error(`Error executing ${interaction.commandName}`);
+                console.error(error);
+                return;
+            }
+        }
         return console.log(this.name);
     }
 };
