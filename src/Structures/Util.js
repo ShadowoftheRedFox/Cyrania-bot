@@ -10,6 +10,7 @@ const fs = require("fs");
 
 const Command = require('./Command');
 const Event = require('./Event.js');
+const Slash = require("./Slash");
 
 module.exports = class Util {
 
@@ -153,21 +154,29 @@ module.exports = class Util {
 	}
 
 	async loadSlashCommands() {
+		//TODO edit that to handle slash class
 		console.log(`[${this.exactDate()}] Loading slash commands`.red);
 		return glob(`${this.directory}slashs/**/*.js`).then(slashs => {
 			for (const slashCommandFile of slashs) {
 				delete require.cache[slashCommandFile];
 				const { name } = path.parse(slashCommandFile);
 				const File = require(slashCommandFile);
-				if (typeof File.data.toJSON != "function") {
+				if (!this.isClass(File)) {
 					console.log([
 						`[${this.exactDate()}]`.red,
 						"ERROR".bgRed.black
 					].join(" "));
-					throw new TypeError(`Slash command ${name} doesn't export a SlashCommandBuilder class.`);
+					throw new TypeError(`Slash command ${name} doesn't export a class!`);
 				}
-
-				this.client.slash.set(File.data.name, File);
+				const slash = new File(this.client, name);
+				if (!(slash instanceof Slash)) {
+					console.log([
+						`[${this.exactDate()}]`.red,
+						"ERROR".bgRed.black
+					].join(" "));
+					throw new TypeError(`Slash command ${name} doesn't belong in Slashs`);
+				}
+				this.client.slash.set(slash.data.name, slash);
 				// no aliases for slash commands
 				console.log(`[${this.exactDate()}] Name: ${name}`.yellow);
 			}
@@ -181,6 +190,8 @@ module.exports = class Util {
 		const commandsGuildSpecific = [];
 
 		const commandKeys = Array.from(this.client.slash.keys());
+
+		//TODO need to delete already existing slash commands
 
 		// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 		for (const key of commandKeys) {
@@ -229,6 +240,22 @@ module.exports = class Util {
 				console.error(error);
 			}
 		})();
+	}
+
+	async deleteSlashCommands() {
+		//! May not be the best to delete and register at each restart, but ¯\_(ツ)_/¯
+
+		// Construct and prepare an instance of the REST module
+		const rest = new REST({ version: '10' }).setToken(token);
+		// for guild-based commands
+		rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
+			.then(() => console.log('Successfully deleted all guild commands.'))
+			.catch(console.error);
+
+		// for global commands
+		rest.put(Routes.applicationCommands(clientId), { body: [] })
+			.then(() => console.log('Successfully deleted all application commands.'))
+			.catch(console.error);
 	}
 
 	/**

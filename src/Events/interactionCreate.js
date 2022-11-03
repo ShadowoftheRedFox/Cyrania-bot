@@ -16,7 +16,7 @@ module.exports = class extends Event {
             }
 
             try {
-                return await command.execute(this.client, interaction);
+                return await command.execute(interaction);
             } catch (error) {
                 console.error(`Error executing ${interaction.commandName}`);
                 console.error(error);

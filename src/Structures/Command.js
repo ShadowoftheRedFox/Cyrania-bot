@@ -1,26 +1,11 @@
-const { PermissionsBitField, Message, SnowflakeUtil } = require("discord.js");
+const { PermissionsBitField, Message } = require("discord.js");
 const colors = require("colors");
 
+/**
+ * @type {Command}
+ */
 module.exports = class Command {
 
-	/**
-	 * 
-	 * @param {MenuDocsClient} client 
-	 * @param {string} name 
-	 * @param {{displayName: string[], 
-	 * aliases: 	string[], 
-	 * category: 	string[], 
-	 * usage: 		string[],
-	 * userPerms:	string[],
-	 * botPerms: 	string[], 
-	 * ownerOnly:	boolean, 
-	 * guildOnly:	boolean
-	 * adminOnly:	boolean,
-	 * managerOnly: boolean,
-	 * staffOnly: 	boolean,
-	 * cooldown: 	number,
-	 * guildWhiteList: string[]}} options 
-	 */
 	constructor(client, name, options = {}) {
 		this.client = client;
 		this.name = name;
@@ -86,5 +71,4 @@ module.exports = class Command {
 	async run(message, ...args) {
 		throw new Error(`Command ${this.name} doesn"t provide a run method!`);
 	}
-
 };
