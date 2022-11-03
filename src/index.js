@@ -4,6 +4,8 @@ const package = require("../package.json");
 const fs = require("fs");
 
 console.log("Starting...");
+
+// increase version at each start
 let Version = package.version.split(".");
 let Vcenti = parseInt(Version[2]);
 let Vdeci = parseInt(Version[1]);
@@ -20,7 +22,7 @@ if (Vdeci === 100) {
 }
 
 package.version = `${Vmain}.${Vdeci}.${Vcenti}`;
-fs.writeFile("./package.json", JSON.stringify(package, package, 1), function (err) {
+fs.writeFile("./package.json", JSON.stringify(package, package, 4), function (err) {
     if (err) console.log(err);
 });
 
