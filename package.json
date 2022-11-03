@@ -1,6 +1,6 @@
 {
  "name": "cyrania",
- "version": "1.1.455",
+ "version": "1.1.479",
  "main": "src/index.js",
  "devDependencies": {
   "@anishshobith/deeptype": "^1.1.0",

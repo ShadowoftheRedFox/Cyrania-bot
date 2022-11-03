@@ -2,7 +2,7 @@
 
 First, run in a command prompt, and choose the directory to be [this folder](./), then run `npm update` to download all the required dependencies. Make sure to have discord.js installed.
 
-You will need a **ConfigFile.json** in [this folder (mainFolder/src/Data)](./src/Data/), that need to fill this requirements:
+You will need a **Config.json** in [this folder (mainFolder/src/Data)](./src/Data/), that need to fill this requirements:
 ```json
 {
     "token": "YOUR BOT TOKEN HERE",

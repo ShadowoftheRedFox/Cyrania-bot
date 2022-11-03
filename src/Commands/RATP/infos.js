@@ -78,7 +78,7 @@ module.exports = class extends Command {
                         });
 
                         const embed = new EmbedBuilder()
-                            .setColor(color)
+                            .setColor("Green")
                             .setFooter({ text: `Requested by ${message.author.username}`, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                             .setTimestamp()
                             .setTitle("Traffic");
@@ -86,7 +86,7 @@ module.exports = class extends Command {
                         if (!flag) {
                             embed.setDescription([
                                 "The traffic is normal on all lines.",
-                                `You can get traffic alert with the command \`${GuildPrefix}alert\`.`
+                                `You can get traffic alert with the command \`alert\`.`
                             ].join("\n"))
                                 .addFields({ name: "**Metros:**", value: "✅ All lines have normal traffic." })
                                 .addFields({ name: "**RERs:**", value: "✅ All lines have normal traffic." })

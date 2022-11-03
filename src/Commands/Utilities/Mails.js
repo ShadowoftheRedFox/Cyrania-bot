@@ -1,7 +1,7 @@
 const Command = require('../../Structures/Command');
 const profile = require("../../Data/User.json");
 const GuildList = require("../../Data/Guild.json");
-const config = require('../../Data/ConfigFile.json');
+const config = require('../../Data/Config.json');
 const fs = require("fs");
 const ms = require("ms");
 var color = require("colors");
@@ -392,7 +392,7 @@ module.exports = class extends Command {
             if (toLC(2) == "add") {
                 if (index > -1) return message.channel.send("This user is already a globaluser.");
                 config.mail.globalUser.push(MID);
-                fs.writeFile("./src/Data/ConfigFile.json", JSON.stringify(config, config, 3), function (err) {
+                fs.writeFile("./src/Data/Config.json", JSON.stringify(config, config, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send("Added.");
@@ -400,7 +400,7 @@ module.exports = class extends Command {
             if (toLC(2) == "remove") {
                 if (index == -1) return message.channel.send("This user is not a globaluser.");
                 config.mail.globalUser.splice(index, 1);
-                fs.writeFile("./src/Data/ConfigFile.json", JSON.stringify(config, config, 3), function (err) {
+                fs.writeFile("./src/Data/Config.json", JSON.stringify(config, config, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send("Removed.");

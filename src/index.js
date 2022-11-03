@@ -1,5 +1,5 @@
 const MenuDocsClient = require('./Structures/MenuDocsClient');
-const config = require("./Data/ConfigFile.json");
+const config = require("./Data/Config.json");
 const package = require("../package.json");
 const fs = require("fs");
 
