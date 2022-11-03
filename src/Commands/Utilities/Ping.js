@@ -1,5 +1,5 @@
 const Command = require('../../Structures/Command');
-const profile = require("../../Data/User.json");
+const UserList = require("../../Data/User.json");
 
 module.exports = class extends Command {
 
@@ -7,7 +7,8 @@ module.exports = class extends Command {
         super(...args, {
             aliases: ['pong'],
             description: ['This provides the ping of the bot', "Donne la latence du bot."],
-            category: ['Utilities', "Utilité"]
+            category: ['Utilities', "Utilité"],
+            slash: true
         });
     }
 
@@ -20,7 +21,7 @@ module.exports = class extends Command {
         const responseEN = choicesEN[Math.floor(Math.random() * choicesEN.length)];
         const responseFR = choicesFR[Math.floor(Math.random() * choicesFR.length)];
 
-        if (profile[message.author.id].langue === "FR") msg.edit(`${responseFR} - Latence du bot: \`${latency}ms\`, Latence de l'API: \`${Math.round(this.client.ws.ping)}ms\``);
+        if (UserList[message.author.id].langue === "FR") msg.edit(`${responseFR} - Latence du bot: \`${latency}ms\`, Latence de l'API: \`${Math.round(this.client.ws.ping)}ms\``);
         else msg.edit(`${responseEN} - Bot Latency: \`${latency}ms\`, API Latency: \`${Math.round(this.client.ws.ping)}ms\``);
     }
 };

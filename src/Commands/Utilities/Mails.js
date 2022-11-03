@@ -1,5 +1,5 @@
 const Command = require('../../Structures/Command');
-const profile = require("../../Data/User.json");
+const UserList = require("../../Data/User.json");
 const GuildList = require("../../Data/Guild.json");
 const config = require('../../Data/Config.json');
 const fs = require("fs");
@@ -76,8 +76,8 @@ module.exports = class extends Command {
             else return args[number].toLowerCase();
         }
 
-        if (!profile[ID].data.mail) {
-            profile[ID].data.mail = {
+        if (!UserList[ID].data.mail) {
+            UserList[ID].data.mail = {
                 mailSend: {
                     number: 0,
                     mails: {}
@@ -102,11 +102,11 @@ module.exports = class extends Command {
                 allBlocked: false,
                 status: "online"
             };
-            fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+            fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                 if (err) console.log(err);
             });
         }
-        const userMail = profile[ID].data.mail;
+        const userMail = UserList[ID].data.mail;
         if (!toLC(1) || toLC(1) == "help") {
             let userTab = [
                 "**[Mail help]**",
@@ -194,8 +194,8 @@ module.exports = class extends Command {
 
             const MID = message.guild ? member.user.id : member.id;
 
-            if (!profile[MID].data.mail) {
-                profile[MID].data.mail = {
+            if (!UserList[MID].data.mail) {
+                UserList[MID].data.mail = {
                     mailSend: {
                         number: 0,
                         mails: {}
@@ -225,7 +225,7 @@ module.exports = class extends Command {
                 });
             }
 
-            const memberMail = profile[MID].data.mail;
+            const memberMail = UserList[MID].data.mail;
 
             if (memberMail.blockedUsers.indexOf(ID) > -1 || memberMail.allBlocked == true && memberMail.whiteListUsers.indexOf(ID) == -1) return message.channel.send("Unfortunately, this user blocked you. Send him this mail yourself of wait to be unblocked.");
 
@@ -251,7 +251,7 @@ module.exports = class extends Command {
                         memberMail.mailReceived.number++;
                         memberMail.notif.remind = true;
                         memberMail.notif.totalNewMail++;
-                        fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                        fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                             if (err) console.log(err);
                         });
 
@@ -289,7 +289,7 @@ module.exports = class extends Command {
                 if (userStatus == "dnd") return message.channel.send("Your status is already on donotdisturb.");
                 else {
                     userStatus = "dnd";
-                    fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                    fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                         if (err) console.log(err);
                     });
                     return message.channel.send("Your status is now on donotdisturb.");
@@ -299,7 +299,7 @@ module.exports = class extends Command {
                 if (userStatus == "online") return message.channel.send("Your status is already on online.");
                 else {
                     userStatus = "online";
-                    fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                    fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                         if (err) console.log(err);
                     });
                     return message.channel.send("Your status is now on online.");
@@ -317,7 +317,7 @@ module.exports = class extends Command {
             if (toLC(3) == "remove" || toLC(3) == "delete" || toLC(3) == "r" || toLC(3) == "d") {
                 if (userMail.blockedUsers.indexOf(MID) == -1) return message.channel.send("This user is not blocked.");
                 userMail.blockedUsers.splice(userMail.blockedUsers.indexOf(MID), 1);
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send(`User unblocked: ${member.user.tag}`);
@@ -326,7 +326,7 @@ module.exports = class extends Command {
                 if (userMail.whiteListUsers.indexOf(MID) > -1) return message.channel.send("This user is whitelisted! You can't block him without removing him from the whitelist.");
 
                 userMail.blockedUsers.push(MID);
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send(`User blocked: ${member.user.tag}`);
@@ -342,7 +342,7 @@ module.exports = class extends Command {
             if (toLC(3) == "remove" || toLC(3) == "delete" || toLC(3) == "r" || toLC(3) == "d") {
                 if (userMail.whiteListUsers.indexOf(MID) == -1) return message.channel.send("This user is not whitelisted.");
                 userMail.whiteListUsers.splice(userMail.whiteListUsers.indexOf(MID), 1);
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send(`User unblocked: ${member.user.tag}`);
@@ -351,7 +351,7 @@ module.exports = class extends Command {
                 if (userMail.whiteListUsers.indexOf(MID) > -1) return message.channel.send("This user is blocked! You can't whitelist him without removing him from the blocked list.");
 
                 userMail.blockedUsers.push(MID);
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send(`User blocked: ${member.user.tag}`);
@@ -365,7 +365,7 @@ module.exports = class extends Command {
             if (toLC(2) == "false" || toLC(2) == "disable" || toLC(2) == "off") {
                 if (userMail.allBlocked == true) return message.channel.send("You are already blocking every users who are not whitelisted.");
                 userMail.allBlocked = false;
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send("You are now blocking all users who are not whitelisted.");
@@ -373,7 +373,7 @@ module.exports = class extends Command {
             if (toLC(2) == "true" || toLC(2) == "enable" || toLC(2) == "on") {
                 if (userMail.allBlocked == false) return message.channel.send("You are already not blocking every users.");
                 userMail.allBlocked = true;
-                fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+                fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                     if (err) console.log(err);
                 });
                 return message.channel.send("You are not blocking all users anymore.");
@@ -718,7 +718,7 @@ module.exports = class extends Command {
             const unreadMailTabPosition = userMail.mailReceived.unread.indexOf(prethisMail); //get the position of the mail in the unread tab
             userMail.mailReceived.unread.splice(unreadMailTabPosition, 1);
             userMail.mailReceived.read.push(prethisMail);
-            fs.writeFile("./src/Data/User.json", JSON.stringify(profile, profile, 3), function (err) {
+            fs.writeFile("./src/Data/User.json", JSON.stringify(UserList, UserList, 3), function (err) {
                 if (err) console.log(err);
             });
 

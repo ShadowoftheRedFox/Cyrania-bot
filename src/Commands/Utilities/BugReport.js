@@ -1,5 +1,5 @@
 const Command = require('../../Structures/Command');
-const profile = require("../../Data/User.json");
+const UserList = require("../../Data/User.json");
 const { MessageAttachment, Attachment } = require('discord.js');
 
 module.exports = class extends Command {
@@ -19,8 +19,8 @@ module.exports = class extends Command {
         const msg = args.slice(1).join(" ");
 
 
-        if (profile[message.author.id].langue === "EN" && !msg) return message.reply("You need to type some text after the command!");
-        if (profile[message.author.id].langue === "FR" && !msg) return message.reply("Vous devez taper du texte après la commande!");
+        if (UserList[message.author.id].langue === "EN" && !msg) return message.reply("You need to type some text after the command!");
+        if (UserList[message.author.id].langue === "FR" && !msg) return message.reply("Vous devez taper du texte après la commande!");
 
         if (message.content.length >= 1900) {
             //TODO docs
@@ -31,8 +31,8 @@ module.exports = class extends Command {
         } else this.client.channels.cache.get("783000325954994216").send(`New bug reported by <@${message.author.id}>:\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n${msg}`);
 
 
-        if (profile[message.author.id].langue === "EN") return message.reply("Your bug has been successfully sended!");
-        if (profile[message.author.id].langue === "FR") return message.reply("Votre bug à bien été envoyé!");
+        if (UserList[message.author.id].langue === "EN") return message.reply("Your bug has been successfully sended!");
+        if (UserList[message.author.id].langue === "FR") return message.reply("Votre bug à bien été envoyé!");
 
     }
 };

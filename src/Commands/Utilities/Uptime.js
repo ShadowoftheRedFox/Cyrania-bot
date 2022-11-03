@@ -1,6 +1,6 @@
 const Command = require('../../Structures/Command');
 const ms = require('ms');
-const profile = require("../../Data/User.json");
+const UserList = require("../../Data/User.json");
 
 module.exports = class extends Command {
 
@@ -16,7 +16,7 @@ module.exports = class extends Command {
 
     async run(message) {
 
-        if (profile[message.author.id].langue === "FR") message.channel.send(`Ma durée de connexion est de \`${ms(this.client.uptime, { long: true })}\`.`);
+        if (UserList[message.author.id].langue === "FR") message.channel.send(`Ma durée de connexion est de \`${ms(this.client.uptime, { long: true })}\`.`);
         else message.channel.send(`My uptime is \`${ms(this.client.uptime, { long: true })}\`.`);
     }
 };

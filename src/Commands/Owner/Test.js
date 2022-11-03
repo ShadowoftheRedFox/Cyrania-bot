@@ -2,7 +2,7 @@ const Command = require('../../Structures/Command');
 const Discord = require('discord.js');
 //TODO update embed
 const { EmbedBuilder } = require("discord.js");
-const profile = require("../../Data/User.json");
+const UserList = require("../../Data/User.json");
 const fs = require("fs");
 const ms = require('ms');
 var colors = require("colors");
