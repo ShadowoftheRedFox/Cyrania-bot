@@ -107,7 +107,7 @@ module.exports = class extends Command {
 			});
 
 		} else if (isNaN(args[2]) === true) {
-			return message.channel.send(`This is not a number, please follow this exemple:\n\`,,modlogs ${ID} [number]\``);
+			return message.channel.send(`This is not a number, please follow this example:\n\`,,modlogs ${ID} [number]\``);
 		} else {
 			if (parseInt(args[2]) > caseNumber) return message.channel.send(`${member.user.tag} has only ${caseNumber} modlogs.`);
 			if (parseInt(args[2]) <= 0) return message.channel.send("User cases start from 1.");

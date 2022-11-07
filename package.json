@@ -1,6 +1,6 @@
 {
     "name": "cyrania",
-    "version": "1.1.494",
+    "version": "1.1.496",
     "main": "src/index.js",
     "devDependencies": {
         "@anishshobith/deeptype": "^1.1.0",
@@ -16,7 +16,6 @@
         "xmlhttprequest": "^1.8.0"
     },
     "scripts": {
-        "start": "node src/index.json",
         "test": "node test/mini.test.js"
     },
     "author": "Shadow of the Red Fox#5881",

@@ -102,13 +102,13 @@ module.exports = class extends Command {
             if (!args[3].toLowerCase() || args[3].toLowerCase() !== "ban" && args[3].toLowerCase() !== "tempban" && args[3].toLowerCase() !== "kick" && args[3].toLowerCase() !== "mute" && args[3].toLowerCase() !== "softban") return message.channel.send(`You need to choose a sanction when someone get ${modlogsAmountTrigger} modlogs. Sanctions types are: ban, tempban, softban, kick and mute.`);
 
             if (args[3].toLowerCase() === "mute") {
-                if (!args[4].toLowerCase()) return message.channel.send("Please provide a duration for the mute like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+                if (!args[4].toLowerCase()) return message.channel.send("Please provide a duration for the mute like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
                 try {
                     duration = ms(args[4].toLowerCase());
-                    if (isNaN(duration)) return message.author.send("Please provide a duration like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+                    if (isNaN(duration)) return message.author.send("Please provide a duration like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
                 } catch (e) {
                     console.log(e.stack);
-                    return message.author.send("Please provide a duration like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+                    return message.author.send("Please provide a duration like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
                 }
 
                 if (args[5]) reason = args.slice(5).join(" ");

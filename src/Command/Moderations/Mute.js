@@ -68,14 +68,14 @@ module.exports = class extends Command {
         if (ID === message.guild.ownerID) return message.author.send("You dare trying to mute the owner?!");
         if (member.user.bot) return message.author.send("This user is a bot, why would you mute him?");
         if (member.permissions.has("ADMINISTRATOR", true)) return message.author.send("Mute an admin would be... useless, you know?");
-        if (!args[2]) return message.author.send("Please provide a duration like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+        if (!args[2]) return message.author.send("Please provide a duration like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
         var duration = "";
         try {
             duration = ms(args[2].toLowerCase());
-            if (isNaN(duration)) return message.author.send("Please provide a duration like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+            if (isNaN(duration)) return message.author.send("Please provide a duration like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
         } catch (e) {
             console.log(e.stack);
-            return message.author.send("Please provide a duration like the following exemple:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
+            return message.author.send("Please provide a duration like the following example:\n10m = 10 minutes, 100s = 100 seconds, 10d = 10 days, 10h = 10 hours");
         }
 
         let reason = "No reason provided.";

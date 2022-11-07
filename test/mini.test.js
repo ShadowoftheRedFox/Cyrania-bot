@@ -1,5 +1,7 @@
 //. Run script with "node test/mini.test.js" in shell
 
+return true;
+
 /*
 ? What is the point of this script?
 
