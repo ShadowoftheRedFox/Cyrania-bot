@@ -6,7 +6,7 @@ module.exports = class extends Slash {
 
     constructor(...args) {
         super(...args, {
-            isGlobal: false,
+            isGlobal: true,
             data: new SlashCommandBuilder()
                 .setName("ping")
                 .setDescription("Pong! | Gives the latency of the bot.")

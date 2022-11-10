@@ -225,8 +225,8 @@ module.exports = class extends Event {
             //special case when a user ahve perms and not a role
             if (message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return "admin";
             if (message.member.permissions.has(PermissionsBitField.Flags.ManageGuild)) return "manager";
-            if (ID == message.guild.ownerId) return "owner";
-            else if (found == "") return "server";
+            if (message.author.id == message.guild.ownerId) return "owner";
+            else return "server";
         } else return "mp";
     }
 };

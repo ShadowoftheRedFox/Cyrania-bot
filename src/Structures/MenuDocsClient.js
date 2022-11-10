@@ -65,11 +65,11 @@ module.exports = class MenuDocsClient extends Client {
 		if (!options.token) throw new Error('You must pass the token for the client.');
 		this.token = options.token;
 
-		if (!options.owners || options.owners.length == 0) console.log(["WARNING".bgYellow.black, " No owners provided."].join(""));
+		if (!options.owners || !options.owners.length) console.log(["WARNING".bgYellow.black, " No owners provided."].join(""));
 
-		if (!options.defaultPerms) throw new Error('You must pass default perm(s) for the Client.');
+		if (!options.defaultPermsBot || !options.defaultPermsBot) throw new Error('You must pass default perm(s) for the Client.');
 
-		this.defaultPerms = new PermissionsBitField(options.defaultPerms).freeze();
+		this.defaultPerms = new PermissionsBitField(options.defaultPermsBot).freeze();
 	}
 
 	async start(token = this.token) {
